@@ -629,3 +629,23 @@ def test_元组下标多级路径():
     cfg = build_config("quick_test")
     new = apply_overrides(cfg, {"tta.chain_length.1": 4})
     assert new.tta.chain_length[1] == 4
+
+
+def test_导出的YAML里路径使用正斜杠():
+    """跨平台配置：Windows 上也不能写出 `outputs\\logs` 这种反斜杠路径。
+
+    Linux/macOS 把反斜杠当普通字符，`outputs\\logs` 会变成一个**目录名**，
+    同一份配置在两个平台指向不同位置。回归用例：CI 的漂移检查就是这么挂的
+    （runtime.log_dir: 文件=PosixPath('outputs\\logs') vs schema=PosixPath('outputs/logs')）。
+    """
+    text = dump_yaml(build_config("default"))
+    assert "outputs/logs" in text
+    assert "outputs\\logs" not in text
+
+
+def test_正斜杠路径可往返且语义不变():
+    """写出去是正斜杠，读回来必须与原配置等价（Path 相等性按 parts 比较）。"""
+    original = build_config("default")
+    reloaded = loads_config(dump_yaml(original))
+    assert reloaded == original
+    assert reloaded.runtime.log_dir == original.runtime.log_dir

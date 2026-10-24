@@ -150,7 +150,7 @@ runtime:
   resume: true
   keep_failed: true
   cache_masters: true
-  log_dir: outputs\logs
+  log_dir: outputs/logs
   log_level: INFO
 export:
   write_sha256: true

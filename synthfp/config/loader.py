@@ -96,13 +96,20 @@ def _set_path(node: Any, keys: List[str], value: Any) -> Any:
 # 读写
 # ---------------------------------------------------------------------------
 def to_plain(obj: Any) -> Any:
-    """把 Pydantic / Path / tuple 递归转成 YAML 友好的纯 Python 对象。"""
+    """把 Pydantic / Path / tuple 递归转成 YAML 友好的纯 Python 对象。
+
+    路径一律写成**正斜杠**（``outputs/logs`` 而不是 ``outputs\\logs``）：
+    Windows 反斜杠在 Linux/macOS 上不是分隔符，会被当成一个目录名的一部分
+    ——同一份配置文件在不同平台上就会指向不同的目录。
+    用正斜杠后两边都能正确解析，且 ``PurePath`` 的相等性按 path parts 比较，
+    因此往返比较不受影响。
+    """
     if isinstance(obj, dict):
         return {k: to_plain(v) for k, v in obj.items()}
     if isinstance(obj, (list, tuple)):
         return [to_plain(v) for v in obj]
     if isinstance(obj, Path):
-        return str(obj)
+        return obj.as_posix()
     return obj
 
 
