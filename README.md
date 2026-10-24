@@ -3,7 +3,7 @@
 [![CI](https://github.com/xf785/slim-frnet/actions/workflows/ci.yml/badge.svg)](https://github.com/xf785/slim-frnet/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
-[![Tests](https://img.shields.io/badge/tests-912%20passed-brightgreen.svg)](tests/)
+[![Tests](https://img.shields.io/badge/tests-916%20passed-brightgreen.svg)](tests/)
 
 > 版本 **v2.0** ｜ GUI 优先 ｜ 4 个核心依赖 ｜ 完全可复现 ｜ MIT
 > 按 [设计文档](docs/DESIGN.md) 对原项目做架构级重建：保留已验证的生成内核，重写配置、核心域层、插件层、服务层与图形界面。
@@ -370,7 +370,7 @@ python -m pytest tests -o addopts="" -q     # 全量（约 25 秒）
 python -m pytest tests/test_tta.py -q       # 单个模块
 ```
 
-当前状态：**912 passed**。覆盖范围：
+当前状态：**916 passed**。覆盖范围：
 
 | 文件 | 用例 | 内容 |
 |------|------|------|
@@ -380,7 +380,7 @@ python -m pytest tests/test_tta.py -q       # 单个模块
 | `test_config.py` | 64 | 预设、校验拒绝、YAML 往返与幂等、点号覆盖（含元组下标）、合并语义 |
 | `test_core.py` | 56 | 种子树、计划确定性、划分、Manifest、存储、量化 |
 | `test_minutiae.py` | 55 | 向量化 Zhang-Suen、CN 检测、伪点过滤、ISO 模板 |
-| `test_pipeline.py` | 37 | 算子链、端到端落盘、可复现性、失败隔离与重试、二值收口 |
+| `test_pipeline.py` | 38 | 算子链、端到端落盘、可复现性、失败隔离与重试、二值收口 |
 | `test_app.py` | 33 | 服务回调、断点续传、导出幂等、统计自洽 |
 | `test_cli.py` | 28 | 全部子命令、退出码、错误路径、GBK 控制台输出 |
 | `test_gui.py` | 22 | 8 页面构造与刷新、主窗口导航、Qt 兼容层约束、GUI 驱动整链路生成、外观控件回填 |
