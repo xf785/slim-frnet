@@ -34,13 +34,6 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Image Processing",
 ]
 
-[project.urls]
-Homepage = "https://github.com/SLIM-FRNet/slim-frnet"
-Repository = "https://github.com/SLIM-FRNet/slim-frnet"
-Issues = "https://github.com/SLIM-FRNet/slim-frnet/issues"
-Changelog = "https://github.com/SLIM-FRNet/slim-frnet/releases"
-"架构说明" = "https://github.com/SLIM-FRNet/slim-frnet/blob/main/ARCHITECTURE.md"
-
 # --- 最小依赖：仅 4 个第三方包 ---
 dependencies = [
     "numpy>=1.26",
@@ -48,6 +41,13 @@ dependencies = [
     "pydantic>=2.5",
     "PyYAML>=6.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/SLIM-FRNet/slim-frnet"
+Repository = "https://github.com/SLIM-FRNet/slim-frnet"
+Issues = "https://github.com/SLIM-FRNet/slim-frnet/issues"
+Changelog = "https://github.com/SLIM-FRNet/slim-frnet/releases"
+"架构说明" = "https://github.com/SLIM-FRNet/slim-frnet/blob/main/ARCHITECTURE.md"
 
 [project.optional-dependencies]
 # GUI 绑定二选一即可：程序优先 PySide6，回退 PyQt6
@@ -67,6 +67,18 @@ license-files = ["LICENSE"]
 
 [tool.setuptools.packages.find]
 include = ["synthfp*"]
+# 显式排除非包目录：本地归档（_archive/ 里可能有几百 MB 的旧项目与虚拟环境）、
+# 测试、脚本与文档。不写 exclude 时 setuptools 会遍历整棵树，本地构建会非常慢。
+exclude = [
+    "_archive*",
+    "tests*",
+    "tools*",
+    "docs*",
+    "outputs*",
+    "datasets*",
+    "build*",
+    "dist*",
+]
 
 [tool.setuptools.package-data]
 synthfp = ["gui/style/*.qss"]
