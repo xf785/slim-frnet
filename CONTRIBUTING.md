@@ -55,7 +55,7 @@ ruff check synthfp tests tools       # 静态检查
    （GUI 会自动出现勾选框与参数控件）；
 3. 在 `tests/test_tta.py` 补用例：确定性、值域、不改输入、参数可复现。
 
-不需要改 GUI、管道、配置系统的任何代码。接口契约见 [CONTRACTS.md](CONTRACTS.md)。
+不需要改 GUI、管道、配置系统的任何代码。接口契约见 [docs/CONTRACTS.md](docs/CONTRACTS.md)。
 
 ## 加一个生成后端
 
