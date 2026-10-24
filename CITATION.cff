@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "如果这个工具帮助你产出了研究成果，请按下面的条目引用。"
+title: "SLIM-FRNet: 轻量级 SFinGe 合成指纹数据集合成平台"
+abstract: >-
+  一个以图形界面为一级入口的合成指纹数据集合成工具。复刻 SFinGe 的生成链
+  （手指轮廓 → 奇异点 → 零极点方向场 → Perlin 频率图 → Gabor 迭代脊线 →
+  捺印形变 / 传感器特性 → TTA → 质量评估 → 细节点 → 标准化存储），
+  输出带配置指纹、种子、校验和的完全可复现数据集。
+authors:
+  - name: "SLIM-FRNet"
+type: software
+license: MIT
+version: 2.0.0
+date-released: "2026-10-24"
+keywords:
+  - synthetic fingerprint
+  - biometrics
+  - dataset generation
+  - SFinGe
+  - reproducibility
+references:
+  - type: conference-paper
+    title: "Synthetic Fingerprint-Image Generation"
+    authors:
+      - family-names: Cappelli
+        given-names: Raffaele
+      - family-names: Maio
+        given-names: Dario
+      - family-names: Maltoni
+        given-names: Davide
+    collection-title: "Proceedings of the 15th International Conference on Pattern Recognition (ICPR)"
+    year: 2000

@@ -1,0 +1,50 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+
+# ---- Tooling ----
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# pytest 临时根与受限沙箱可能留下的空目录
+.pytest-tmp/
+.pytest-work/
+.pytest-basetemp*/
+.pytest-perm-probe/
+pytest-cache-files-*/
+pytest-of-*/
+tests/_pytmp/
+tests/_pytest*/
+tests/_sfp_probe_*/
+_sfp_probe_*/
+_junk_sfp_probe_*/
+_pytest*/
+tmp*/
+_acl-recovery/
+
+# ---- Runtime output ----
+outputs/
+datasets/
+*.log
+crash.log
+
+# ---- 本地归档：原项目基线快照、立项材料、编辑器本地配置 ----
+# 这些只在你本机保留，绝不进仓库（约 640 MB）
+_archive/
+synthetic-fingerprint-generator/
+.claude/
+.vscode/
+.idea/
+
+# ---- 生成的界面截图（开发用，发布用的截图在 docs/screenshots/） ----
+outputs/gui-shots/
+outputs/gui-shots-full/

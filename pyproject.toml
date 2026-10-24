@@ -1,0 +1,116 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "synthfp"
+version = "2.0.0"
+description = "SLIM-FRNet：轻量级 SFinGe 合成指纹数据集合成平台（GUI 优先，可复现）"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "SLIM-FRNet" }]
+keywords = [
+    "synthetic-fingerprint",
+    "biometrics",
+    "dataset-generation",
+    "sfinge",
+    "reproducibility",
+    "gabor",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Win32 (MS Windows)",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Image Processing",
+]
+
+[project.urls]
+Homepage = "https://github.com/SLIM-FRNet/slim-frnet"
+Repository = "https://github.com/SLIM-FRNet/slim-frnet"
+Issues = "https://github.com/SLIM-FRNet/slim-frnet/issues"
+Changelog = "https://github.com/SLIM-FRNet/slim-frnet/releases"
+"架构说明" = "https://github.com/SLIM-FRNet/slim-frnet/blob/main/ARCHITECTURE.md"
+
+# --- 最小依赖：仅 4 个第三方包 ---
+dependencies = [
+    "numpy>=1.26",
+    "opencv-python>=4.8",
+    "pydantic>=2.5",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+# GUI 绑定二选一即可：程序优先 PySide6，回退 PyQt6
+gui = ["PySide6>=6.5"]
+gui-pyqt = ["PyQt6>=6.5"]
+dev = ["pytest>=8.0", "ruff>=0.5"]
+all = ["PySide6>=6.5", "pytest>=8.0", "ruff>=0.5"]
+
+[project.scripts]
+synthfp = "synthfp.__main__:main"
+
+[project.gui-scripts]
+synthfp-gui = "synthfp.gui.app:main"
+
+[tool.setuptools]
+license-files = ["LICENSE"]
+
+[tool.setuptools.packages.find]
+include = ["synthfp*"]
+
+[tool.setuptools.package-data]
+synthfp = ["gui/style/*.qss"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::UserWarning:pydantic.*"]
+# 排除临时/工具目录，避免收集阶段被无关目录干扰（`--setup-show` 也不会进去）。
+# 这些名字覆盖 pytest 自己的临时根、本项目的测试脚手架目录，以及受限沙箱
+# 可能留下的不可读空目录（普通环境下它们本就不存在，列出无副作用）。
+norecursedirs = [
+    "pytest-cache-files-*",
+    "pytest-of-*",
+    "tmp*",
+    "_*probe*",
+    "_pytmp",
+    "_pytest",
+    "_pytest_tmp",
+    "_pytestroot",
+    "_pytest-work",
+    ".pytest*",
+    ".venv",
+    "venv",
+    "__pycache__",
+    "_archive",
+    "outputs",
+    "datasets",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+exclude = ["_archive", ".venv", "outputs", "datasets"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B"]
+# E501 交给格式化器；B008 是默认参数调用的常见误报。
+# UP006/UP035/UP045（typing.List → list 等）刻意不启用：本包所有模块都有
+# `from __future__ import annotations`，显式 typing 泛型是为了让 Python 3.10
+# 用户在任意求值路径下都能正确解析注解，属于有意为之的可读性选择。
+ignore = ["E501", "B008", "UP006", "UP035", "UP045"]
+
+[tool.ruff.lint.per-file-ignores]
+# 原项目已验证的内核：保留其原始风格，只做必要的最小改造（便于逐像素对照）
+"synthfp/legacy/**" = ["E", "F", "W", "I", "B"]
+"tests/**" = ["E", "F", "W", "I", "B"]

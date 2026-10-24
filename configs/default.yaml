@@ -1,0 +1,162 @@
+# ============================================================
+#  synthfp v2.0 — 默认配置（由 tools/gen_default_config.py 从 schema 生成）
+# ============================================================
+#  本文件是「默认值快照」，字段与 synthfp/config/schema.py 一一对应。
+#  修改默认值请改 schema，然后重新生成；也可以直接改本文件用于单次运行。
+#
+#  快速上手:
+#    synthfp show                      # 看当前生效的配置摘要
+#    synthfp show --resolved           # 看完整展开后的 YAML
+#    synthfp generate -c configs/default.yaml
+#    synthfp gui                       # 图形界面（所有参数都能在这里调）
+#
+#  覆盖任意字段（点号路径，可重复）:
+#    synthfp generate -c configs/default.yaml \
+#        --set dataset.identities=100 --set runtime.workers=8 --set tta.mode=chain
+#
+#  复现四要素: 配置 + 种子(runtime.seed) + 版本(environment.json) + 校验和
+# ============================================================
+
+schema_version: '2.0'
+dataset:
+  name: synth_fp_v1
+  output_root: outputs
+  identities: 10
+  fingers_per_identity: 2
+  impressions_per_finger: 2
+  tta_per_impression: 3
+classes:
+  distribution:
+    arch: 0.05
+    left_loop: 0.35
+    right_loop: 0.35
+    whorl: 0.2
+    twin_loop: 0.05
+backend:
+  name: sfinge
+  resolution: finger_500dpi
+  image_size: null
+  ppi: 500
+  finger_width_frac:
+  - 0.62
+  - 0.72
+  finger_height_frac:
+  - 0.88
+  - 0.95
+  aspect_bias:
+  - 0.46
+  - 0.54
+  top_cap_frac:
+  - 0.24
+  - 0.38
+  bottom_cap_frac:
+  - 0.18
+  - 0.3
+  min_ridge_width: 5
+  max_ridge_width: 15
+  gabor_filter_size: 10
+  gabor_n_frequencies: 5
+  coarse_scale: 0.7
+  max_iterations: 80
+  convergence_eps: 0.001
+  seed_density: 0.001
+  freq_spread: 0.25
+  ridge_gray:
+  - 15
+  - 55
+  valley_gray:
+  - 225
+  - 252
+  ridge_only_black: false
+  mask_feather: 12
+  noise_sigma: 1.5
+  texture_strength: 10.0
+  fill_ratio: 0.88
+  shape_style: round
+  singular_jitter: 0.13
+impression:
+  deform_enabled: true
+  pressure_range:
+  - 0.3
+  - 0.7
+  influence_ratio: 0.2
+  rotation_range:
+  - -8.0
+  - 8.0
+  translation_px: 8
+  elastic_sigma: 30.0
+  elastic_alpha: 3.0
+  sensor_enabled: true
+  sensor_type: optical
+  sensor_strength: 1.0
+  stress_enabled: true
+  stress_num_operators:
+  - 1
+  - 2
+  stress_operators:
+    ridge_breaks: true
+    dirt_stain: true
+    ink_smudge: true
+    blemish_spot: true
+    ridge_edge_roughness: true
+    ghosting: false
+    partial_missing: false
+tta:
+  enabled: true
+  mode: mixed
+  chain_length:
+  - 1
+  - 2
+  chain_probability: 0.35
+  max_distortion: 0.75
+  operators:
+  - rotate
+  - scale
+  - brightness
+  - contrast
+  - blur
+  - gaussian_noise
+  params: {}
+quality:
+  enabled: true
+  min_score: 0.0
+  min_usable_area: 0.0
+  reject_on_fail: false
+minutiae:
+  enabled: true
+  min_distance: 16.0
+  border_margin: 6
+  max_count: 200
+  export_iso: false
+  compute_angle: true
+annotation:
+  export_mask: true
+  export_orientation: true
+  export_centerline: false
+  export_quality_map: false
+split:
+  enabled: true
+  strategy: by_identity
+  ratios:
+    train: 0.7
+    val: 0.15
+    test: 0.15
+  write_csv: true
+runtime:
+  seed: 42
+  workers: 4
+  retries: 2
+  timeout_s: 300.0
+  resume: true
+  keep_failed: true
+  cache_masters: true
+  log_dir: outputs\logs
+  log_level: INFO
+export:
+  write_sha256: true
+  write_readme: true
+  write_environment: true
+  write_stats: true
+  image_format: png
+  png_compression: 3
+  copy_images_into_split: false
