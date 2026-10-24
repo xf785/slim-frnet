@@ -651,3 +651,36 @@ def test_finalize_image二值模式按128阈值():
     cfg = apply_overrides(build_config("quick_test"), {"backend.ridge_only_black": True})
     image = np.array([[10, 127, 128, 200]], dtype=np.uint8)
     assert finalize_image(image, cfg).tolist() == [[0, 0, 255, 255]]
+
+
+def test_光度算子不影响掩模(tmp_path: Path):
+    """亮度/对比度这类像素值算子不能作用到二值掩模上。
+
+    回归用例：早先掩模也走完整算子链，`brightness delta=-0.6` 会把前景从 1.0
+    压到 0.4，乘 255 后低于阈值，整块掩模被清空；随后 TTA 的背景还原把整幅图
+    刷成纯 255。实测 72 样本里有 4 张空白图（质量分 0、细节点 0）。
+    """
+    from synthfp.plugins.tta import TTARegistry
+
+    cfg = _cfg(tmp_path)
+    layout = _layout(cfg)
+    entry = Planner(cfg).build().entries[0]
+    runner = PipelineRunner(cfg, layout)
+
+    mask = np.zeros((120, 90), dtype=np.uint8)
+    mask[20:100, 15:75] = 255
+    spec = entry.samples[0]
+
+    photometric = [
+        TTARegistry.create("brightness", {"delta": -0.6}),
+        TTARegistry.create("contrast", {"factor": -0.8}),
+        TTARegistry.create("gamma", {"gamma": 2.5}),
+        TTARegistry.create("gaussian_noise", {"sigma": 0.15}),
+    ]
+    out = runner._transform_mask(mask, photometric, spec)
+    assert np.array_equal(out, mask), "光度/噪声算子不应改变掩模"
+
+    geometric = [TTARegistry.create("rotate", {"angle": 15.0})]
+    moved = runner._transform_mask(mask, geometric, spec)
+    assert not np.array_equal(moved, mask), "几何算子应当改变掩模"
+    assert (moved > 0).sum() > 0.5 * (mask > 0).sum(), "旋转后前景不应大面积丢失"

@@ -1,4 +1,4 @@
-# SLIM-FRNet · 合成指纹数据集平台
+﻿# SLIM-FRNet · 合成指纹数据集平台
 
 [![CI](https://github.com/xf785/slim-frnet/actions/workflows/ci.yml/badge.svg)](https://github.com/xf785/slim-frnet/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -249,6 +249,7 @@ start_cli.bat                 双击打开命令行 / 快速执行子命令
 configs/default.yaml          默认配置（从 schema 生成）
 docs/DESIGN.md                重建设计文档（架构决策与取舍）
 docs/CONTRACTS.md             插件层接口契约（并行开发的唯一约定）
+report/main.pdf               结项研究报告（LaTeX 源码与实验数据在 report/）
 docs/screenshots/             界面截图（README 顶部展示用）
 docs/images/                  样例图（照片模式 / 二值模式对比、数据集预览表）
 tools/gen_default_config.py   重新生成默认配置（`--check` 校验是否漂移）

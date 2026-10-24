@@ -30,6 +30,10 @@ logger = logging.getLogger(__name__)
 
 __all__ = ["PipelineRunner"]
 
+#: 会改变手指空间位置或可见性的 TTA 类别 —— 只有这些需要作用到掩模上。
+#: 光度 / 噪声 / 压缩 / 传感器 属于像素值变换，作用到二值掩模会把它整块抹掉。
+_MASK_CATEGORIES = frozenset({"几何", "遮挡"})
+
 ProgressFn = Callable[[SampleResult], None]
 
 
@@ -251,6 +255,15 @@ class PipelineRunner:
             rng = np.random.default_rng(spec.seed)
             warped = mask.astype(np.float32) / 255.0
             for op in operators:
+                # 只把**改变空间位置/可见性**的算子作用到掩模上。
+                #
+                # 亮度、对比度、Gamma、模糊、噪声、压缩、传感器都是"像素值"变换：
+                # 作用在 0/1 二值掩模上会把 1 压到阈值以下 ——
+                # 例如 brightness 的 delta=-0.6 会让前景变成 0.4，乘 255 后低于 127，
+                # 整块掩模被清空；随后 TTA 的背景还原又把整幅图刷成纯 255。
+                # 实测 72 个样本里有 4 个因此变成空白图（质量分 0、细节点 0）。
+                if getattr(op, "category", "") not in _MASK_CATEGORIES:
+                    continue
                 try:
                     warped = op.apply(warped, rng)
                 except Exception:  # pragma: no cover - 与图像侧保持一致的容错

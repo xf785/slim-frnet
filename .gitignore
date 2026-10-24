@@ -1,4 +1,4 @@
-# ---- Python ----
+﻿# ---- Python ----
 __pycache__/
 *.py[cod]
 *.egg-info/
@@ -48,3 +48,16 @@ synthetic-fingerprint-generator/
 # ---- 生成的界面截图（开发用，发布用的截图在 docs/screenshots/） ----
 outputs/gui-shots/
 outputs/gui-shots-full/
+
+# ---- LaTeX 构建产物（报告源码在 report/，PDF 入库） ----
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+report/_pages/
+report/figures/*_preview.png
