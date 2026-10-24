@@ -44,6 +44,24 @@ HEADER = """\
 """
 
 
+def _canonical(text: str) -> str:
+    """归一化换行与行尾空白，用于在只做提示的场景下粗比文本。"""
+    return "\n".join(line.rstrip() for line in text.replace("\r\n", "\n").replace("\r", "\n").split("\n")).strip("\n")
+
+
+def _differing_fields(a: dict, b: dict, prefix: str = "") -> list:
+    """递归找出两棵配置树里取值不同的叶子字段（点号路径）。"""
+    out: list = []
+    for key in sorted(set(a) | set(b)):
+        path = f"{prefix}{key}"
+        va, vb = a.get(key, "<缺失>"), b.get(key, "<缺失>")
+        if isinstance(va, dict) and isinstance(vb, dict):
+            out.extend(_differing_fields(va, vb, prefix=f"{path}."))
+        elif va != vb:
+            out.append(f"{path}: 文件={va!r}  schema={vb!r}")
+    return out
+
+
 def main(argv: list | None = None) -> int:
     parser = argparse.ArgumentParser(description="从 schema 生成默认配置")
     parser.add_argument(
@@ -62,14 +80,39 @@ def main(argv: list | None = None) -> int:
         if not target.is_file():
             print(f"✗ {target} 不存在", file=sys.stderr)
             return 1
-        if target.read_text(encoding="utf-8") != expected:
+
+        # 判定「漂移」只看**语义**：文件能否解析回与 schema 默认值相同的配置。
+        #
+        # 不能比字节：PyYAML 与 pydantic 的小版本差异会改变量化的空格、
+        # 浮点写法或字段顺序，即使内容完全等价，字节比较也会在别的机器上误报
+        # （CI 用 pydantic 2.14，本机是 2.13，就是这么炸的）。
+        from synthfp.config import load_config
+
+        try:
+            on_disk = load_config(target)
+        except Exception as exc:  # noqa: BLE001 - 任何解析失败都算漂移
+            print(f"✗ {target} 无法解析：{exc}", file=sys.stderr)
+            return 1
+
+        want = AppConfig().model_dump(mode="python")
+        got = on_disk.model_dump(mode="python")
+        if got != want:
+            print("✗ configs/default.yaml 与 schema 默认值不一致：", file=sys.stderr)
+            for line in _differing_fields(got, want)[:12]:
+                print(f"    {line}", file=sys.stderr)
             print(
-                "✗ configs/default.yaml 与 schema 已漂移，请运行：\n"
-                "    python tools/gen_default_config.py",
+                "  修复：python tools/gen_default_config.py",
                 file=sys.stderr,
             )
             return 1
-        print("✓ configs/default.yaml 与 schema 一致")
+
+        # 文本层面只做提示，不影响退出码
+        if _canonical(target.read_text(encoding="utf-8")) != _canonical(expected):
+            print(
+                "  ℹ 语义一致，但文本与当前环境渲染结果不同"
+                "（通常是 PyYAML / pydantic 版本差异），可忽略",
+            )
+        print("✓ configs/default.yaml 与 schema 语义一致")
         return 0
 
     target.write_text(expected, encoding="utf-8")
