@@ -1,168 +1,125 @@
-# SLIM-FRNet · 合成指纹数据集平台
-
-[![CI](https://github.com/SLIM-FRNet/slim-frnet/actions/workflows/ci.yml/badge.svg)](https://github.com/SLIM-FRNet/slim-frnet/actions/workflows/ci.yml)
+﻿# SLIM-FRNet 路 鍚堟垚鎸囩汗鏁版嵁闆嗗钩鍙?
+[![CI](https://github.com/xf785/slim-frnet/actions/workflows/ci.yml/badge.svg)](https://github.com/xf785/slim-frnet/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/tests-912%20passed-brightgreen.svg)](tests/)
 
-> 版本 **v2.0** ｜ GUI 优先 ｜ 4 个核心依赖 ｜ 完全可复现 ｜ MIT
-> 按 [设计文档](docs/DESIGN.md) 对原项目做架构级重建：保留已验证的生成内核，重写配置、核心域层、插件层、服务层与图形界面。
-
-一键生成**完全可复现**的合成指纹数据集：主指纹 → 捺印（形变 / 传感器 / 退化链）→ TTA，
-输出图像、掩模、方向场、细节点、质量分、划分与校验和，附 8 页图形界面。
-
-<!-- 界面截图 -->
-| 生成监控 | 结果预览 |
+> 鐗堟湰 **v2.0** 锝?GUI 浼樺厛 锝?4 涓牳蹇冧緷璧?锝?瀹屽叏鍙鐜?锝?MIT
+> 鎸?[璁捐鏂囨。](docs/DESIGN.md) 瀵瑰師椤圭洰鍋氭灦鏋勭骇閲嶅缓锛氫繚鐣欏凡楠岃瘉鐨勭敓鎴愬唴鏍革紝閲嶅啓閰嶇疆銆佹牳蹇冨煙灞傘€佹彃浠跺眰銆佹湇鍔″眰涓庡浘褰㈢晫闈€?
+涓€閿敓鎴?*瀹屽叏鍙鐜?*鐨勫悎鎴愭寚绾规暟鎹泦锛氫富鎸囩汗 鈫?鎹哄嵃锛堝舰鍙?/ 浼犳劅鍣?/ 閫€鍖栭摼锛夆啋 TTA锛?杈撳嚭鍥惧儚銆佹帺妯°€佹柟鍚戝満銆佺粏鑺傜偣銆佽川閲忓垎銆佸垝鍒嗕笌鏍￠獙鍜岋紝闄?8 椤靛浘褰㈢晫闈€?
+<!-- 鐣岄潰鎴浘 -->
+| 鐢熸垚鐩戞帶 | 缁撴灉棰勮 |
 |---|---|
-| ![生成监控](docs/screenshots/gui-01-monitor.png) | ![结果预览](docs/screenshots/gui-02-preview.png) |
-| **即时渲染（逐算子对比）** | **TTA 配置** |
-| ![即时渲染](docs/screenshots/gui-03-live-render.png) | ![TTA 配置](docs/screenshots/gui-04-tta.png) |
+| ![鐢熸垚鐩戞帶](docs/screenshots/gui-01-monitor.png) | ![缁撴灉棰勮](docs/screenshots/gui-02-preview.png) |
+| **鍗虫椂娓叉煋锛堥€愮畻瀛愬姣旓級** | **TTA 閰嶇疆** |
+| ![鍗虫椂娓叉煋](docs/screenshots/gui-03-live-render.png) | ![TTA 閰嶇疆](docs/screenshots/gui-04-tta.png) |
 
 ---
 
-## ⚠️ 合成数据声明
+## 鈿狅笍 鍚堟垚鏁版嵁澹版槑
 
-本软件生成的图像**完全由算法合成**，不含任何真实人类指纹数据，不涉及个人生物特征信息。
-生成算法复刻自 SFinGe 方法学（Cappelli et al., *Synthetic Fingerprint-Image Generation*, ICPR 2000）。
-可用于算法研究、模型预训练、数据增强与教学；**不得**用于冒充真实身份或规避生物识别系统。
-
+鏈蒋浠剁敓鎴愮殑鍥惧儚**瀹屽叏鐢辩畻娉曞悎鎴?*锛屼笉鍚换浣曠湡瀹炰汉绫绘寚绾规暟鎹紝涓嶆秹鍙婁釜浜虹敓鐗╃壒寰佷俊鎭€?鐢熸垚绠楁硶澶嶅埢鑷?SFinGe 鏂规硶瀛︼紙Cappelli et al., *Synthetic Fingerprint-Image Generation*, ICPR 2000锛夈€?鍙敤浜庣畻娉曠爺绌躲€佹ā鍨嬮璁粌銆佹暟鎹寮轰笌鏁欏锛?*涓嶅緱**鐢ㄤ簬鍐掑厖鐪熷疄韬唤鎴栬閬跨敓鐗╄瘑鍒郴缁熴€?
 ---
 
-## 1. 30 秒上手
-
-**Windows 用户最省事**：双击 [start_gui.bat](start_gui.bat) 即可（自动找 Python、检查依赖、启动界面）。
-命令行同理，双击 [start_cli.bat](start_cli.bat)，或 `start_cli.bat selfcheck`。
-
-手动方式：
-
+## 1. 30 绉掍笂鎵?
+**Windows 鐢ㄦ埛鏈€鐪佷簨**锛氬弻鍑?[start_gui.bat](start_gui.bat) 鍗冲彲锛堣嚜鍔ㄦ壘 Python銆佹鏌ヤ緷璧栥€佸惎鍔ㄧ晫闈級銆?鍛戒护琛屽悓鐞嗭紝鍙屽嚮 [start_cli.bat](start_cli.bat)锛屾垨 `start_cli.bat selfcheck`銆?
+鎵嬪姩鏂瑰紡锛?
 ```bash
-# 1) 安装（核心只有 4 个依赖 + 一个 Qt 绑定）
-pip install -r requirements.txt
+# 1) 瀹夎锛堟牳蹇冨彧鏈?4 涓緷璧?+ 涓€涓?Qt 缁戝畾锛?pip install -r requirements.txt
 
-# 2) 自检：不需要任何外部数据，验证整条链路
+# 2) 鑷锛氫笉闇€瑕佷换浣曞閮ㄦ暟鎹紝楠岃瘉鏁存潯閾捐矾
 python -m synthfp selfcheck
 
-# 3) 生成一个小数据集（约 30 秒）
+# 3) 鐢熸垚涓€涓皬鏁版嵁闆嗭紙绾?30 绉掞級
 python -m synthfp generate --preset quick_test
 
-# 4) 启动图形界面（推荐入口）
+# 4) 鍚姩鍥惧舰鐣岄潰锛堟帹鑽愬叆鍙ｏ級
 python -m synthfp gui
 ```
 
-> GUI 需要 PySide6 **或** PyQt6，装一个就够。程序优先用 PySide6，
-> 找不到时自动回退 PyQt6 —— 已经装了 PyQt6 的机器不必再装 PySide6。
-
-生成结果：
-
+> GUI 闇€瑕?PySide6 **鎴?* PyQt6锛岃涓€涓氨澶熴€傜▼搴忎紭鍏堢敤 PySide6锛?> 鎵句笉鍒版椂鑷姩鍥為€€ PyQt6 鈥斺€?宸茬粡瑁呬簡 PyQt6 鐨勬満鍣ㄤ笉蹇呭啀瑁?PySide6銆?
+鐢熸垚缁撴灉锛?
 ```
 outputs/quick_test/
-├── README.md                  # 数据集说明（合成声明 + 字段释义 + 复现方法）
-├── dataset_manifest.jsonl     # 每行一个样本的完整记录（唯一元数据来源）
-├── plan.jsonl                 # 生成计划（可复现依据）
-├── config.resolved.yaml       # 实际生效的完整配置
-├── environment.json           # 环境快照
-├── stats.json                 # 统计报告
-├── splits/train.csv           # 按身份划分（无身份泄漏）
-├── checksums/sha256sums.txt   # 全量文件校验和
-├── images/000001/left_thumb/imp_01/000001_left_thumb_imp01_tta00.png
-├── mask/ orientation/ frequency/ centerline/ quality/ minutiae/
-└── logs/{generation,done,failed}.jsonl
+鈹溾攢鈹€ README.md                  # 鏁版嵁闆嗚鏄庯紙鍚堟垚澹版槑 + 瀛楁閲婁箟 + 澶嶇幇鏂规硶锛?鈹溾攢鈹€ dataset_manifest.jsonl     # 姣忚涓€涓牱鏈殑瀹屾暣璁板綍锛堝敮涓€鍏冩暟鎹潵婧愶級
+鈹溾攢鈹€ plan.jsonl                 # 鐢熸垚璁″垝锛堝彲澶嶇幇渚濇嵁锛?鈹溾攢鈹€ config.resolved.yaml       # 瀹為檯鐢熸晥鐨勫畬鏁撮厤缃?鈹溾攢鈹€ environment.json           # 鐜蹇収
+鈹溾攢鈹€ stats.json                 # 缁熻鎶ュ憡
+鈹溾攢鈹€ splits/train.csv           # 鎸夎韩浠藉垝鍒嗭紙鏃犺韩浠芥硠婕忥級
+鈹溾攢鈹€ checksums/sha256sums.txt   # 鍏ㄩ噺鏂囦欢鏍￠獙鍜?鈹溾攢鈹€ images/000001/left_thumb/imp_01/000001_left_thumb_imp01_tta00.png
+鈹溾攢鈹€ mask/ orientation/ frequency/ centerline/ quality/ minutiae/
+鈹斺攢鈹€ logs/{generation,done,failed}.jsonl
 ```
 
 ---
 
-## 2. 它做什么
-
-一条完整的样本管道（设计文档 4.4）：
+## 2. 瀹冨仛浠€涔?
+涓€鏉″畬鏁寸殑鏍锋湰绠￠亾锛堣璁℃枃妗?4.4锛夛細
 
 ```
-主指纹（每个手指只算一次）
-  手指轮廓 5 参数模型 → Core/Delta 奇异点 → Zero-Pole 方向场
-  → 多层 Perlin 频率图 → Gabor 迭代脊线合成
-        │
-        ├── 捺印 #1 ── 随机退化链 → 皮肤按压变形 → 传感器特性 ──┬── TTA #0（原始对照）
-        │                                                      ├── TTA #1
-        │                                                      └── TTA #2 …
-        ├── 捺印 #2 ── …（同上）
-        └── 捺印 #N
-                │
-                └── 每个样本：TTA → 质量评估 → 细节点提取 → 标准化存储 → Manifest
+涓绘寚绾癸紙姣忎釜鎵嬫寚鍙畻涓€娆★級
+  鎵嬫寚杞粨 5 鍙傛暟妯″瀷 鈫?Core/Delta 濂囧紓鐐?鈫?Zero-Pole 鏂瑰悜鍦?  鈫?澶氬眰 Perlin 棰戠巼鍥?鈫?Gabor 杩唬鑴婄嚎鍚堟垚
+        鈹?        鈹溾攢鈹€ 鎹哄嵃 #1 鈹€鈹€ 闅忔満閫€鍖栭摼 鈫?鐨偆鎸夊帇鍙樺舰 鈫?浼犳劅鍣ㄧ壒鎬?鈹€鈹€鈹攢鈹€ TTA #0锛堝師濮嬪鐓э級
+        鈹?                                                     鈹溾攢鈹€ TTA #1
+        鈹?                                                     鈹斺攢鈹€ TTA #2 鈥?        鈹溾攢鈹€ 鎹哄嵃 #2 鈹€鈹€ 鈥︼紙鍚屼笂锛?        鈹斺攢鈹€ 鎹哄嵃 #N
+                鈹?                鈹斺攢鈹€ 姣忎釜鏍锋湰锛歍TA 鈫?璐ㄩ噺璇勪及 鈫?缁嗚妭鐐规彁鍙?鈫?鏍囧噯鍖栧瓨鍌?鈫?Manifest
 ```
 
-**为什么以「主指纹」为任务粒度**：主指纹合成是整条链里最贵的一步（Gabor 迭代）。
-把它放在条目内复用，使「每个手指只算一次」成为**结构性保证**而不是缓存碰运气，
-增加捺印数与 TTA 数的边际成本因此变得很低。
-
+**涓轰粈涔堜互銆屼富鎸囩汗銆嶄负浠诲姟绮掑害**锛氫富鎸囩汗鍚堟垚鏄暣鏉￠摼閲屾渶璐电殑涓€姝ワ紙Gabor 杩唬锛夈€?鎶婂畠鏀惧湪鏉＄洰鍐呭鐢紝浣裤€屾瘡涓墜鎸囧彧绠椾竴娆°€嶆垚涓?*缁撴瀯鎬т繚璇?*鑰屼笉鏄紦瀛樼杩愭皵锛?澧炲姞鎹哄嵃鏁颁笌 TTA 鏁扮殑杈归檯鎴愭湰鍥犳鍙樺緱寰堜綆銆?
 ---
 
-## 3. 图形界面（一级入口）
+## 3. 鍥惧舰鐣岄潰锛堜竴绾у叆鍙ｏ級
 
-双击 [start_gui.bat](start_gui.bat)，或 `python -m synthfp gui`。
-打开后是三区布局：左侧导航 ｜ 中央页面 ｜ 底部状态栏。
-
-想先在没显示器的环境里看界面长什么样（CI、远程 shell），可以离屏截图：
-
+鍙屽嚮 [start_gui.bat](start_gui.bat)锛屾垨 `python -m synthfp gui`銆?鎵撳紑鍚庢槸涓夊尯甯冨眬锛氬乏渚у鑸?锝?涓ぎ椤甸潰 锝?搴曢儴鐘舵€佹爮銆?
+鎯冲厛鍦ㄦ病鏄剧ず鍣ㄧ殑鐜閲岀湅鐣岄潰闀夸粈涔堟牱锛圕I銆佽繙绋?shell锛夛紝鍙互绂诲睆鎴浘锛?
 ```bash
 python tools/shoot_gui.py --dataset outputs/demo
-# → outputs/gui-shots/01_数据集配置.png … 08_导出.png
+# 鈫?outputs/gui-shots/01_鏁版嵁闆嗛厤缃?png 鈥?08_瀵煎嚭.png
 ```
 
-| 页面 | 内容 |
+| 椤甸潰 | 鍐呭 |
 |------|------|
-| **1. 数据集配置** | 身份数 / 手指数 / 捺印数 / TTA 数、输出目录、类别比例（实时归一化 + 预计样本数）、划分比例 |
-| **2. 后端配置** | 后端选择、分辨率预设或自定义尺寸、脊线合成全部参数、外观、手指轮廓比例、奇异点；一键「渲染测试图」看耗时 |
-| **3. TTA 配置** | 21 个算子分 6 类勾选、逐个参数滑块 + 「固定」开关、组合策略；**效果对比**页实时渲染逐算子结果 |
-| **4. 质量与标注** | 质量阈值与丢弃策略、细节点提取参数、ISO 模板、标注产物开关、捺印阶段（变形 / 传感器 / 退化链） |
-| **5. 生成监控** | 进度条、7 个实时统计卡片、任务表（含状态与质量分）、彩色日志、暂停 / 恢复 / 停止、失败筛选 |
-| **6. 结果预览** | 数据集树浏览 → 缩略图网格 → 大图（缩放 / 平移），可叠加掩模、细节点、方向场、奇异点；另有「即时渲染」页实时调参 |
-| **7. 统计报告** | 类别 / 质量 / 细节点 / TTA 算子 / 划分 / 手指 六个视角的分布表，均可导出 CSV |
-| **8. 导出** | 逐项选择导出内容（README / 统计 / 校验和 / 划分 / 环境）、可选打包 ZIP、数据集结构总览、复现命令一键复制 |
+| **1. 鏁版嵁闆嗛厤缃?* | 韬唤鏁?/ 鎵嬫寚鏁?/ 鎹哄嵃鏁?/ TTA 鏁般€佽緭鍑虹洰褰曘€佺被鍒瘮渚嬶紙瀹炴椂褰掍竴鍖?+ 棰勮鏍锋湰鏁帮級銆佸垝鍒嗘瘮渚?|
+| **2. 鍚庣閰嶇疆** | 鍚庣閫夋嫨銆佸垎杈ㄧ巼棰勮鎴栬嚜瀹氫箟灏哄銆佽剨绾垮悎鎴愬叏閮ㄥ弬鏁般€佸瑙傘€佹墜鎸囪疆寤撴瘮渚嬨€佸寮傜偣锛涗竴閿€屾覆鏌撴祴璇曞浘銆嶇湅鑰楁椂 |
+| **3. TTA 閰嶇疆** | 21 涓畻瀛愬垎 6 绫诲嬀閫夈€侀€愪釜鍙傛暟婊戝潡 + 銆屽浐瀹氥€嶅紑鍏炽€佺粍鍚堢瓥鐣ワ紱**鏁堟灉瀵规瘮**椤靛疄鏃舵覆鏌撻€愮畻瀛愮粨鏋?|
+| **4. 璐ㄩ噺涓庢爣娉?* | 璐ㄩ噺闃堝€间笌涓㈠純绛栫暐銆佺粏鑺傜偣鎻愬彇鍙傛暟銆両SO 妯℃澘銆佹爣娉ㄤ骇鐗╁紑鍏炽€佹嵑鍗伴樁娈碉紙鍙樺舰 / 浼犳劅鍣?/ 閫€鍖栭摼锛?|
+| **5. 鐢熸垚鐩戞帶** | 杩涘害鏉°€? 涓疄鏃剁粺璁″崱鐗囥€佷换鍔¤〃锛堝惈鐘舵€佷笌璐ㄩ噺鍒嗭級銆佸僵鑹叉棩蹇椼€佹殏鍋?/ 鎭㈠ / 鍋滄銆佸け璐ョ瓫閫?|
+| **6. 缁撴灉棰勮** | 鏁版嵁闆嗘爲娴忚 鈫?缂╃暐鍥剧綉鏍?鈫?澶у浘锛堢缉鏀?/ 骞崇Щ锛夛紝鍙彔鍔犳帺妯°€佺粏鑺傜偣銆佹柟鍚戝満銆佸寮傜偣锛涘彟鏈夈€屽嵆鏃舵覆鏌撱€嶉〉瀹炴椂璋冨弬 |
+| **7. 缁熻鎶ュ憡** | 绫诲埆 / 璐ㄩ噺 / 缁嗚妭鐐?/ TTA 绠楀瓙 / 鍒掑垎 / 鎵嬫寚 鍏釜瑙嗚鐨勫垎甯冭〃锛屽潎鍙鍑?CSV |
+| **8. 瀵煎嚭** | 閫愰」閫夋嫨瀵煎嚭鍐呭锛圧EADME / 缁熻 / 鏍￠獙鍜?/ 鍒掑垎 / 鐜锛夈€佸彲閫夋墦鍖?ZIP銆佹暟鎹泦缁撴瀯鎬昏銆佸鐜板懡浠や竴閿鍒?|
 
-界面细节：
-
-- GUI **不直接调用任何生成逻辑**，只调用应用服务层；服务层用回调上报进度，
-  由 `synthfp/gui/qt_bridge.py` 转成 Qt 信号（跨线程队列投递），因此主线程永不阻塞。
-- 参数改动**即时 Pydantic 校验**：非法值不会落地，控件回滚并给出可读的错误定位。
-- 未捕获异常写入 `crash.log` 并弹窗提示，不会静默崩溃（原项目最大的痛点）。
-- 暗色 / 亮色主题（菜单「视图 → 主题」），不依赖 qdarktheme 等额外包。
-
+鐣岄潰缁嗚妭锛?
+- GUI **涓嶇洿鎺ヨ皟鐢ㄤ换浣曠敓鎴愰€昏緫**锛屽彧璋冪敤搴旂敤鏈嶅姟灞傦紱鏈嶅姟灞傜敤鍥炶皟涓婃姤杩涘害锛?  鐢?`synthfp/gui/qt_bridge.py` 杞垚 Qt 淇″彿锛堣法绾跨▼闃熷垪鎶曢€掞級锛屽洜姝や富绾跨▼姘镐笉闃诲銆?- 鍙傛暟鏀瑰姩**鍗虫椂 Pydantic 鏍￠獙**锛氶潪娉曞€间笉浼氳惤鍦帮紝鎺т欢鍥炴粴骞剁粰鍑哄彲璇荤殑閿欒瀹氫綅銆?- 鏈崟鑾峰紓甯稿啓鍏?`crash.log` 骞跺脊绐楁彁绀猴紝涓嶄細闈欓粯宕╂簝锛堝師椤圭洰鏈€澶х殑鐥涚偣锛夈€?- 鏆楄壊 / 浜壊涓婚锛堣彍鍗曘€岃鍥?鈫?涓婚銆嶏級锛屼笉渚濊禆 qdarktheme 绛夐澶栧寘銆?
 ---
 
-## 4. 命令行（高级用户）
-
+## 4. 鍛戒护琛岋紙楂樼骇鐢ㄦ埛锛?
 ```bash
 python -m synthfp --help
 
-# 生成
+# 鐢熸垚
 python -m synthfp generate --preset quick_test
 python -m synthfp generate -c configs/default.yaml --set runtime.workers=8
 python -m synthfp generate --preset large_research --set dataset.identities=50 --dry-run
 
-# 计划预览（不写任何文件）
+# 璁″垝棰勮锛堜笉鍐欎换浣曟枃浠讹級
 python -m synthfp plan --preset default --json
 
-# 数据集操作
-python -m synthfp stats    --dataset outputs/synth_fp_v1
-python -m synthfp validate --dataset outputs/synth_fp_v1 --check-hash   # 重算 SHA-256
-python -m synthfp export   --dataset outputs/synth_fp_v1                 # 幂等重导出
+# 鏁版嵁闆嗘搷浣?python -m synthfp stats    --dataset outputs/synth_fp_v1
+python -m synthfp validate --dataset outputs/synth_fp_v1 --check-hash   # 閲嶇畻 SHA-256
+python -m synthfp export   --dataset outputs/synth_fp_v1                 # 骞傜瓑閲嶅鍑?
+# 閰嶇疆
+python -m synthfp presets                                        # 鍒楀嚭 10 涓唴缃璁?python -m synthfp show --preset high_quality_only                # 鎽樿
+python -m synthfp show --preset default --resolved               # 瀹屾暣 YAML
 
-# 配置
-python -m synthfp presets                                        # 列出 10 个内置预设
-python -m synthfp show --preset high_quality_only                # 摘要
-python -m synthfp show --preset default --resolved               # 完整 YAML
+# 鍗曞紶棰勮锛堜笉钀界洏锛屽彲 --save锛?python -m synthfp preview --preset default --finger left_thumb --tta 1 --save out.png
 
-# 单张预览（不落盘，可 --save）
-python -m synthfp preview --preset default --finger left_thumb --tta 1 --save out.png
-
-# 自检
+# 鑷
 python -m synthfp selfcheck
 
-# 图形界面
+# 鍥惧舰鐣岄潰
 python -m synthfp gui
 ```
 
-`--set` 使用点号路径，可重复，值按 YAML 解析：
-
+`--set` 浣跨敤鐐瑰彿璺緞锛屽彲閲嶅锛屽€兼寜 YAML 瑙ｆ瀽锛?
 ```bash
 python -m synthfp generate \
   --set dataset.identities=200 \
@@ -175,240 +132,179 @@ python -m synthfp generate \
 
 ---
 
-## 5. 内置预设
+## 5. 鍐呯疆棰勮
 
-| 预设 | 规模 | 用途 |
+| 棰勮 | 瑙勬ā | 鐢ㄩ€?|
 |------|------|------|
-| `default` | 10×2×2×3 = 120 | 标准数据集 |
-| `quick_test` | 2×1×1×2 = 4 | 环境自检 |
-| `large_research` | 500×4×3×4 = 24000 | 科研大规模集 |
-| `high_quality_only` | 120（阈值 60 分丢弃） | 清晰度敏感任务 |
-| `robust_low_quality` | 120（重度退化 + 噪声遮挡链） | 鲁棒性 / 拒识研究 |
-| `class_balanced` | 50×2×2×3 = 600 | 五类各 20%，分类任务 |
-| `whorl_only` / `arch_only` / `loop_only` | 120 | 单类别研究 |
-| `no_tta` | 10×2×2×1 = 40 | 只要干净捺印基底 |
+| `default` | 10脳2脳2脳3 = 120 | 鏍囧噯鏁版嵁闆?|
+| `quick_test` | 2脳1脳1脳2 = 4 | 鐜鑷 |
+| `large_research` | 500脳4脳3脳4 = 24000 | 绉戠爺澶ц妯￠泦 |
+| `high_quality_only` | 120锛堥槇鍊?60 鍒嗕涪寮冿級 | 娓呮櫚搴︽晱鎰熶换鍔?|
+| `robust_low_quality` | 120锛堥噸搴﹂€€鍖?+ 鍣０閬尅閾撅級 | 椴佹鎬?/ 鎷掕瘑鐮旂┒ |
+| `class_balanced` | 50脳2脳2脳3 = 600 | 浜旂被鍚?20%锛屽垎绫讳换鍔?|
+| `whorl_only` / `arch_only` / `loop_only` | 120 | 鍗曠被鍒爺绌?|
+| `no_tta` | 10脳2脳2脳1 = 40 | 鍙骞插噣鎹哄嵃鍩哄簳 |
 
-预设是**对默认配置的覆盖片段**而非独立 YAML 副本，因此 schema 升级时预设自动跟随、不会腐化。
-
+棰勮鏄?*瀵归粯璁ら厤缃殑瑕嗙洊鐗囨**鑰岄潪鐙珛 YAML 鍓湰锛屽洜姝?schema 鍗囩骇鏃堕璁捐嚜鍔ㄨ窡闅忋€佷笉浼氳厫鍖栥€?
 ---
 
-## 6. 可复现性
+## 6. 鍙鐜版€?
+鍥涜绱犵己涓€涓嶅彲锛堣璁℃枃妗?0.2锛夛細
 
-四要素缺一不可（设计文档 0.2）：
-
-| 要素 | 落盘位置 |
+| 瑕佺礌 | 钀界洏浣嶇疆 |
 |------|---------|
-| **配置** | `config.resolved.yaml` + manifest 每行的 `config_fingerprint` |
-| **种子** | `runtime.seed` 派生整棵种子树，每个样本的种子写在 manifest 的 `seed` 字段 |
-| **版本** | `environment.json`（Python / 平台 / numpy / opencv / pydantic / synthfp 版本） |
-| **校验和** | `checksums/sha256sums.txt` + manifest 每行的 `sha256` |
+| **閰嶇疆** | `config.resolved.yaml` + manifest 姣忚鐨?`config_fingerprint` |
+| **绉嶅瓙** | `runtime.seed` 娲剧敓鏁存５绉嶅瓙鏍戯紝姣忎釜鏍锋湰鐨勭瀛愬啓鍦?manifest 鐨?`seed` 瀛楁 |
+| **鐗堟湰** | `environment.json`锛圥ython / 骞冲彴 / numpy / opencv / pydantic / synthfp 鐗堟湰锛?|
+| **鏍￠獙鍜?* | `checksums/sha256sums.txt` + manifest 姣忚鐨?`sha256` |
 
-种子派生是**纯 SHA-256 层级树**（`synthfp/core/seeds.py`），不使用 Python 的 `hash()`：
-
+绉嶅瓙娲剧敓鏄?*绾?SHA-256 灞傜骇鏍?*锛坄synthfp/core/seeds.py`锛夛紝涓嶄娇鐢?Python 鐨?`hash()`锛?
 ```
-dataset → identity → finger → impression → tta
+dataset 鈫?identity 鈫?finger 鈫?impression 鈫?tta
 ```
 
-因此：同一份配置 + 同一个种子，在任何机器、任何进程、任何线程数下都得到**逐像素相同**的结果。
-`synthfp selfcheck` 会实测这一点（同种子两次渲染逐像素比对）。
-
+鍥犳锛氬悓涓€浠介厤缃?+ 鍚屼竴涓瀛愶紝鍦ㄤ换浣曟満鍣ㄣ€佷换浣曡繘绋嬨€佷换浣曠嚎绋嬫暟涓嬮兘寰楀埌**閫愬儚绱犵浉鍚?*鐨勭粨鏋溿€?`synthfp selfcheck` 浼氬疄娴嬭繖涓€鐐癸紙鍚岀瀛愪袱娆℃覆鏌撻€愬儚绱犳瘮瀵癸級銆?
 ---
 
-## 7. 目录结构
+## 7. 鐩綍缁撴瀯
 
 ```
 synthfp/
-├── config/          配置系统：Pydantic schema + YAML 读写 + 10 个预设
-├── core/            核心域层
-│   ├── seeds.py         确定性种子树（可复现基石）
-│   ├── types.py         全部领域数据结构（单一数据源）
-│   ├── planner.py       计划展开 + 按身份划分（防泄漏）
-│   ├── scheduler.py     任务调度（线程池 / 串行、断点续传、失败隔离）
-│   ├── manifest.py      唯一元数据来源（jsonl 追加写）
-│   ├── storage.py       目录布局 + 原子写 + 校验和
-│   └── quantize.py      方向场/频率图的 uint8 紧凑量化
-├── pipeline/        样本管道：chain（可复现算子链选择）/ runner / stages
-├── plugins/         插件层
-│   ├── backends/        SFinGe 后端（复刻内核）、Dummy 后端
-│   ├── impressions/     皮肤按压变形、4 种传感器特性
-│   ├── tta/             21 个 TTA 算子（4 类）
-│   ├── quality/         自研 NFIQ2 风格质量评分
-│   └── minutiae/        向量化 Zhang-Suen + Crossing Number + ISO 模板
-├── app/             应用服务层：GenerationService / PreviewService / exporter / stats
-├── gui/             图形界面（8 页面 + 主题 + 控件库）
-│   ├── qt.py            Qt 绑定兼容层（PySide6 / PyQt6）
-│   └── pages/           8 个页面，声明式「配置 ↔ 控件」双向绑定
-├── legacy/          **原项目已验证的生成内核**（保留资产，最小改造）
-│   ├── render/          轮廓 / 奇异点 / 方向场 / 频率图 / Gabor 脊线
-│   ├── degrade/         19 个指纹退化算子（作为捺印扰动复用）
-│   └── util/            Unicode 安全图像读写
-└── cli.py           CLI（仅用标准库 argparse）
+鈹溾攢鈹€ config/          閰嶇疆绯荤粺锛歅ydantic schema + YAML 璇诲啓 + 10 涓璁?鈹溾攢鈹€ core/            鏍稿績鍩熷眰
+鈹?  鈹溾攢鈹€ seeds.py         纭畾鎬х瀛愭爲锛堝彲澶嶇幇鍩虹煶锛?鈹?  鈹溾攢鈹€ types.py         鍏ㄩ儴棰嗗煙鏁版嵁缁撴瀯锛堝崟涓€鏁版嵁婧愶級
+鈹?  鈹溾攢鈹€ planner.py       璁″垝灞曞紑 + 鎸夎韩浠藉垝鍒嗭紙闃叉硠婕忥級
+鈹?  鈹溾攢鈹€ scheduler.py     浠诲姟璋冨害锛堢嚎绋嬫睜 / 涓茶銆佹柇鐐圭画浼犮€佸け璐ラ殧绂伙級
+鈹?  鈹溾攢鈹€ manifest.py      鍞竴鍏冩暟鎹潵婧愶紙jsonl 杩藉姞鍐欙級
+鈹?  鈹溾攢鈹€ storage.py       鐩綍甯冨眬 + 鍘熷瓙鍐?+ 鏍￠獙鍜?鈹?  鈹斺攢鈹€ quantize.py      鏂瑰悜鍦?棰戠巼鍥剧殑 uint8 绱у噾閲忓寲
+鈹溾攢鈹€ pipeline/        鏍锋湰绠￠亾锛歝hain锛堝彲澶嶇幇绠楀瓙閾鹃€夋嫨锛? runner / stages
+鈹溾攢鈹€ plugins/         鎻掍欢灞?鈹?  鈹溾攢鈹€ backends/        SFinGe 鍚庣锛堝鍒诲唴鏍革級銆丏ummy 鍚庣
+鈹?  鈹溾攢鈹€ impressions/     鐨偆鎸夊帇鍙樺舰銆? 绉嶄紶鎰熷櫒鐗规€?鈹?  鈹溾攢鈹€ tta/             21 涓?TTA 绠楀瓙锛? 绫伙級
+鈹?  鈹溾攢鈹€ quality/         鑷爺 NFIQ2 椋庢牸璐ㄩ噺璇勫垎
+鈹?  鈹斺攢鈹€ minutiae/        鍚戦噺鍖?Zhang-Suen + Crossing Number + ISO 妯℃澘
+鈹溾攢鈹€ app/             搴旂敤鏈嶅姟灞傦細GenerationService / PreviewService / exporter / stats
+鈹溾攢鈹€ gui/             鍥惧舰鐣岄潰锛? 椤甸潰 + 涓婚 + 鎺т欢搴擄級
+鈹?  鈹溾攢鈹€ qt.py            Qt 缁戝畾鍏煎灞傦紙PySide6 / PyQt6锛?鈹?  鈹斺攢鈹€ pages/           8 涓〉闈紝澹版槑寮忋€岄厤缃?鈫?鎺т欢銆嶅弻鍚戠粦瀹?鈹溾攢鈹€ legacy/          **鍘熼」鐩凡楠岃瘉鐨勭敓鎴愬唴鏍?*锛堜繚鐣欒祫浜э紝鏈€灏忔敼閫狅級
+鈹?  鈹溾攢鈹€ render/          杞粨 / 濂囧紓鐐?/ 鏂瑰悜鍦?/ 棰戠巼鍥?/ Gabor 鑴婄嚎
+鈹?  鈹溾攢鈹€ degrade/         19 涓寚绾归€€鍖栫畻瀛愶紙浣滀负鎹哄嵃鎵板姩澶嶇敤锛?鈹?  鈹斺攢鈹€ util/            Unicode 瀹夊叏鍥惧儚璇诲啓
+鈹斺攢鈹€ cli.py           CLI锛堜粎鐢ㄦ爣鍑嗗簱 argparse锛?
+start_gui.bat                 鍙屽嚮鍚姩鍥惧舰鐣岄潰锛堣嚜鍔ㄦ壘 Python銆佹鏌ヤ緷璧栵級
+start_cli.bat                 鍙屽嚮鎵撳紑鍛戒护琛?/ 蹇€熸墽琛屽瓙鍛戒护
+configs/default.yaml          榛樿閰嶇疆锛堜粠 schema 鐢熸垚锛?docs/DESIGN.md                閲嶅缓璁捐鏂囨。锛堟灦鏋勫喅绛栦笌鍙栬垗锛?docs/CONTRACTS.md             鎻掍欢灞傛帴鍙ｅ绾︼紙骞惰寮€鍙戠殑鍞竴绾﹀畾锛?docs/screenshots/             鐣岄潰鎴浘锛圧EADME 椤堕儴灞曠ず鐢級
+docs/images/                  鏍蜂緥鍥撅紙鐓х墖妯″紡 / 浜屽€兼ā寮忓姣斻€佹暟鎹泦棰勮琛級
+tools/gen_default_config.py   閲嶆柊鐢熸垚榛樿閰嶇疆锛坄--check` 鏍￠獙鏄惁婕傜Щ锛?tools/make_preview_sheet.py   鎶婃暟鎹泦娓叉煋鎴愬姣斿浘锛堜富鎸囩汗 脳 鎹哄嵃 脳 TTA + 鏍囨敞鍙犲姞锛?tools/shoot_gui.py            绂诲睆娓叉煋 8 涓〉闈负 PNG锛堟棤鏄剧ず鍣ㄤ篃鑳芥鏌ョ晫闈級
+tools/launch_gui.vbs          鏃犻粦鑹叉帶鍒跺彴绐楀彛鍚姩鐣岄潰锛坰tart_gui.bat 璋冪敤鍚屼竴璺緞锛?tools/cleanup_locked.ps1      绠＄悊鍛樻竻鐞嗗彈闄愭矙绠遍仐鐣欑殑涓嶅彲鍒犻櫎绌虹洰褰?```
 
-start_gui.bat                 双击启动图形界面（自动找 Python、检查依赖）
-start_cli.bat                 双击打开命令行 / 快速执行子命令
-configs/default.yaml          默认配置（从 schema 生成）
-docs/DESIGN.md                重建设计文档（架构决策与取舍）
-docs/CONTRACTS.md             插件层接口契约（并行开发的唯一约定）
-docs/screenshots/             界面截图（README 顶部展示用）
-docs/images/                  样例图（照片模式 / 二值模式对比、数据集预览表）
-tools/gen_default_config.py   重新生成默认配置（`--check` 校验是否漂移）
-tools/make_preview_sheet.py   把数据集渲染成对比图（主指纹 × 捺印 × TTA + 标注叠加）
-tools/shoot_gui.py            离屏渲染 8 个页面为 PNG（无显示器也能检查界面）
-tools/launch_gui.vbs          无黑色控制台窗口启动界面（start_gui.bat 调用同一路径）
-tools/cleanup_locked.ps1      管理员清理受限沙箱遗留的不可删除空目录
-```
-
-依赖方向是**单向**的：`gui → app → {pipeline, core} → plugins → legacy`。
-`core` 与 `pipeline` 完全不依赖 Qt，因此可以在无图形环境（服务器 / CI）里跑通。
-
+渚濊禆鏂瑰悜鏄?*鍗曞悜**鐨勶細`gui 鈫?app 鈫?{pipeline, core} 鈫?plugins 鈫?legacy`銆?`core` 涓?`pipeline` 瀹屽叏涓嶄緷璧?Qt锛屽洜姝ゅ彲浠ュ湪鏃犲浘褰㈢幆澧冿紙鏈嶅姟鍣?/ CI锛夐噷璺戦€氥€?
 ---
 
-## 8. 依赖（刻意保持最小）
+## 8. 渚濊禆锛堝埢鎰忎繚鎸佹渶灏忥級
 
-| 包 | 用途 | 必要性 |
+| 鍖?| 鐢ㄩ€?| 蹇呰鎬?|
 |----|------|--------|
-| `numpy` | 数组与数值计算 | 必需 |
-| `opencv-python` | 滤波 / 重映射 / 编解码 | 必需 |
-| `pydantic` | 配置校验（单一事实来源） | 必需 |
-| `PyYAML` | 配置读写 | 必需 |
-| `PySide6` **或** `PyQt6` | 图形界面（二者任选其一即可） | 必需（GUI 是一级入口） |
-| `pytest` / `ruff` | 测试与静态检查 | 开发 |
+| `numpy` | 鏁扮粍涓庢暟鍊艰绠?| 蹇呴渶 |
+| `opencv-python` | 婊ゆ尝 / 閲嶆槧灏?/ 缂栬В鐮?| 蹇呴渶 |
+| `pydantic` | 閰嶇疆鏍￠獙锛堝崟涓€浜嬪疄鏉ユ簮锛?| 蹇呴渶 |
+| `PyYAML` | 閰嶇疆璇诲啓 | 蹇呴渶 |
+| `PySide6` **鎴?* `PyQt6` | 鍥惧舰鐣岄潰锛堜簩鑰呬换閫夊叾涓€鍗冲彲锛?| 蹇呴渶锛圙UI 鏄竴绾у叆鍙ｏ級 |
+| `pytest` / `ruff` | 娴嬭瘯涓庨潤鎬佹鏌?| 寮€鍙?|
 
-**Qt 双绑定支持**：GUI 通过 `synthfp/gui/qt.py` 这一个兼容层访问 Qt，
-它优先用 PySide6（设计文档 3.5 的选型），找不到就自动回退到 PyQt6。
-两边枚举用法一致，只有信号/槽命名不同（`Signal`/`Slot`/`Property`
-对 `pyqtSignal`/`pyqtSlot`/`pyqtProperty`），差异全部收敛在那一个文件里。
-因此：
-
+**Qt 鍙岀粦瀹氭敮鎸?*锛欸UI 閫氳繃 `synthfp/gui/qt.py` 杩欎竴涓吋瀹瑰眰璁块棶 Qt锛?瀹冧紭鍏堢敤 PySide6锛堣璁℃枃妗?3.5 鐨勯€夊瀷锛夛紝鎵句笉鍒板氨鑷姩鍥為€€鍒?PyQt6銆?涓よ竟鏋氫妇鐢ㄦ硶涓€鑷达紝鍙湁淇″彿/妲藉懡鍚嶄笉鍚岋紙`Signal`/`Slot`/`Property`
+瀵?`pyqtSignal`/`pyqtSlot`/`pyqtProperty`锛夛紝宸紓鍏ㄩ儴鏀舵暃鍦ㄩ偅涓€涓枃浠堕噷銆?鍥犳锛?
 ```bash
-pip install PySide6     # 推荐
-# 或
-pip install PyQt6       # 环境里已有 PyQt6 时直接可用，无需再装
+pip install PySide6     # 鎺ㄨ崘
+# 鎴?pip install PyQt6       # 鐜閲屽凡鏈?PyQt6 鏃剁洿鎺ュ彲鐢紝鏃犻渶鍐嶈
 ```
 
-界面代码里任何地方都不会出现 `from PySide6 ...` 或 `from PyQt6 ...`
-（有单元测试守着这条约束）。
-
-**刻意不引入**：scipy、scikit-image、matplotlib、pandas、click、tqdm、
-qdarktheme、pyqtgraph —— 需要的功能都用 numpy/opencv 自己实现
-（质量评分、向量化骨架化、统计图表、进度显示）。
-
+鐣岄潰浠ｇ爜閲屼换浣曞湴鏂归兘涓嶄細鍑虹幇 `from PySide6 ...` 鎴?`from PyQt6 ...`
+锛堟湁鍗曞厓娴嬭瘯瀹堢潃杩欐潯绾︽潫锛夈€?
+**鍒绘剰涓嶅紩鍏?*锛歴cipy銆乻cikit-image銆乵atplotlib銆乸andas銆乧lick銆乼qdm銆?qdarktheme銆乸yqtgraph 鈥斺€?闇€瑕佺殑鍔熻兘閮界敤 numpy/opencv 鑷繁瀹炵幇
+锛堣川閲忚瘎鍒嗐€佸悜閲忓寲楠ㄦ灦鍖栥€佺粺璁″浘琛ㄣ€佽繘搴︽樉绀猴級銆?
 ---
 
-## 9. 性能
+## 9. 鎬ц兘
 
-在 8 核机器上 320×480 单张主指纹的实测：
-
-| 配置 | 单张耗时 | 说明 |
+鍦?8 鏍告満鍣ㄤ笂 320脳480 鍗曞紶涓绘寚绾圭殑瀹炴祴锛?
+| 閰嶇疆 | 鍗曞紶鑰楁椂 | 璇存槑 |
 |------|---------|------|
-| 默认（频率档数 5，迭代分辨率 0.7） | **约 0.7 s** | 推荐 |
-| 迭代分辨率 1.0（最锐利） | 约 1.3 s | 追求最高脊线锐度时使用 |
-| 原项目未优化实现 | 约 4.8 s | 逐像素 Zhang-Suen + 无核缓存 + 20 频率档 |
+| 榛樿锛堥鐜囨。鏁?5锛岃凯浠ｅ垎杈ㄧ巼 0.7锛?| **绾?0.7 s** | 鎺ㄨ崘 |
+| 杩唬鍒嗚鲸鐜?1.0锛堟渶閿愬埄锛?| 绾?1.3 s | 杩芥眰鏈€楂樿剨绾块攼搴︽椂浣跨敤 |
+| 鍘熼」鐩湭浼樺寲瀹炵幇 | 绾?4.8 s | 閫愬儚绱?Zhang-Suen + 鏃犳牳缂撳瓨 + 20 棰戠巼妗?|
 
-三个优化点（算法一行未改）：
-
-1. **Gabor 核库模块级缓存** —— 720 个核只构建一次，跨样本/跨实例复用；
-2. **频率档数 20 → 5** —— 指纹局部脊线周期变化平缓，5 档足够；档数直接决定每次迭代的卷积次数；
-3. **迭代分辨率比例 0.7 + 移除内嵌细化** —— 卷积量约减半；Zhang-Suen 改由细节点插件在
-   **最终样本图**上做一次（向量化 LUT 实现，500×500 约 20 ms），而不是每个主指纹做一遍
-   O(200×H×W) 的 Python 循环。
-
-任务调度用线程池：重活是 OpenCV 的滤波 / 重映射，这些调用会释放 GIL。
-（进程池在 Windows 上需要排队 + pickle 传输 numpy 数组，且模块级核缓存无法跨进程复用，实测更慢。）
+涓変釜浼樺寲鐐癸紙绠楁硶涓€琛屾湭鏀癸級锛?
+1. **Gabor 鏍稿簱妯″潡绾х紦瀛?* 鈥斺€?720 涓牳鍙瀯寤轰竴娆★紝璺ㄦ牱鏈?璺ㄥ疄渚嬪鐢紱
+2. **棰戠巼妗ｆ暟 20 鈫?5** 鈥斺€?鎸囩汗灞€閮ㄨ剨绾垮懆鏈熷彉鍖栧钩缂擄紝5 妗ｈ冻澶燂紱妗ｆ暟鐩存帴鍐冲畾姣忔杩唬鐨勫嵎绉鏁帮紱
+3. **杩唬鍒嗚鲸鐜囨瘮渚?0.7 + 绉婚櫎鍐呭祵缁嗗寲** 鈥斺€?鍗风Н閲忕害鍑忓崐锛沍hang-Suen 鏀圭敱缁嗚妭鐐规彃浠跺湪
+   **鏈€缁堟牱鏈浘**涓婂仛涓€娆★紙鍚戦噺鍖?LUT 瀹炵幇锛?00脳500 绾?20 ms锛夛紝鑰屼笉鏄瘡涓富鎸囩汗鍋氫竴閬?   O(200脳H脳W) 鐨?Python 寰幆銆?
+浠诲姟璋冨害鐢ㄧ嚎绋嬫睜锛氶噸娲绘槸 OpenCV 鐨勬护娉?/ 閲嶆槧灏勶紝杩欎簺璋冪敤浼氶噴鏀?GIL銆?锛堣繘绋嬫睜鍦?Windows 涓婇渶瑕佹帓闃?+ pickle 浼犺緭 numpy 鏁扮粍锛屼笖妯″潡绾ф牳缂撳瓨鏃犳硶璺ㄨ繘绋嬪鐢紝瀹炴祴鏇存參銆傦級
 
 ---
 
-## 10. 常见问题
+## 10. 甯歌闂
 
-**Q：生成的指纹看起来像「圆角方块」？**
-A：那是 SFinGe 5 参数模型的固有轮廓（矩形中段 + 上下椭圆帽）。
-默认使用 `backend.shape_style = round`（超椭圆指腹轮廓）更自然；
-需要与原版逐像素对照时改成 `box`。
+**Q锛氱敓鎴愮殑鎸囩汗鐪嬭捣鏉ュ儚銆屽渾瑙掓柟鍧椼€嶏紵**
+A锛氶偅鏄?SFinGe 5 鍙傛暟妯″瀷鐨勫浐鏈夎疆寤擄紙鐭╁舰涓 + 涓婁笅妞渾甯斤級銆?榛樿浣跨敤 `backend.shape_style = round`锛堣秴妞渾鎸囪吂杞粨锛夋洿鑷劧锛?闇€瑕佷笌鍘熺増閫愬儚绱犲鐓ф椂鏀规垚 `box`銆?
+**Q锛歚tta_index = 0` 涓轰粈涔堟病鏈夌畻瀛愶紵**
+A锛氳繖鏄埢鎰忚璁?鈥斺€?姣忎釜鎹哄嵃鐨勭 0 涓牱鏈繚鐣?*鏈彉鎹㈢殑鍘熷鎹哄嵃**浣滀负骞插噣瀵圭収锛?鎵€鏈?TTA 浠?`tta_index >= 1` 寮€濮嬨€傝嫢鍙兂瑕佸彉鎹㈢粨鏋滐紝鎶?`tta_per_impression` 璋冨ぇ鍗冲彲銆?
+**Q锛氱敓鎴愪腑鏂簡鎬庝箞鍔烇紵**
+A锛氱洿鎺ラ噸璺戝悓鏍风殑鍛戒护銆傝皟搴﹀櫒璇诲彇 `logs/done.jsonl` 骞堕€愭牱鏈‘璁ゅ浘鍍忎粛鍦ㄧ鐩樹笂锛?鍙ˉ鐢熸垚缂哄け鐨勬牱鏈紝鏃ュ織閲屼細鏄剧ず銆屾柇鐐圭画浼狅細璺宠繃 N 涓凡瀹屾垚鏍锋湰銆嶃€?
+**Q锛氭兂鎹㈣嚜娲芥ā鍨嬶紙Turing 绛夛級鎬庝箞鍔烇紵**
+A锛氬疄鐜?`synthfp/plugins/backends/base.py` 鐨?`FingerprintBackend`
+锛堝彧闇€ `generate_master(spec) -> MasterArtifact`锛夛紝鐢?`@BackendRegistry.register` 娉ㄥ唽锛?GUI 鐨勩€屽悗绔厤缃€嶉〉浼氳嚜鍔ㄥ嚭鐜拌鍚庣锛岄厤缃噷 `backend.name` 鏀规垚瀹冨嵆鍙€?
+**Q锛氱敓鎴愬嚭鏉ョ殑鑴婄嚎瀵嗗害鍜岀湡瀹炴寚绾逛笉涓€鏍凤紵**
+A锛氱湡瀹?500 dpi 鎸囩汗鐨勮剨绾垮懆鏈燂紙涓€鑴?+ 涓€璋凤級绾?**8~12 px**锛?.4~0.6 mm锛夛紝
+鑴婄嚎绾﹀崰鎬诲搴︿竴鍗娿€傛湰椤圭洰鎸夎繖涓墿鐞嗛噺鏍囧畾锛屽苟鏈夌敤渚嬪畧鐫€
+锛坄tests/test_backend_ridge.py` 鐢ㄨ嚜鐩稿叧娴嬪懆鏈燂紝瓒呭嚭 7~14 px 灏卞け璐ワ級銆?璋冨瘑搴﹁鏀广€屽悗绔厤缃?鈫?鑴婄嚎鍚堟垚 鈫?鏈€绐?鏈€瀹借剨瀹姐€嶏細
+鏁板€兼槸**涓€涓懆鏈熷崰澶氬皯鍍忕礌**锛岃皟灏忓彉瀵嗐€佽皟澶у彉寰楃█鐤忋€?
+**Q锛氭兂鍙繚鐣欓粦鑹茶剨绾匡紙鍋氬垎鍓?/ 缁嗗寲鐨勬爣娉ㄦ垨杈撳叆锛夛紵**
+A锛氬嬀閫夈€屽悗绔厤缃?鈫?澶栬 鈫?浠呰剨绾挎樉绀轰负榛戣壊锛堢函浜屽€煎浘锛夈€嶏紝
+鎴栭厤缃?`backend.ridge_only_black: true`銆傝緭鍑哄彧鏈?0 涓?255 涓や釜鍙栧€硷細
+鑴婄嚎绾粦銆佽胺绾跨函鐧斤紝绾圭悊涓庡簳鍣竴骞跺叧闂紝涔熶笉鍋氳竟缂樼窘鍖栥€?
+![鐓х墖妯″紡涓庝簩鍊兼ā寮忓姣擼(docs/images/sample-photo-vs-binary.png)
 
-**Q：`tta_index = 0` 为什么没有算子？**
-A：这是刻意设计 —— 每个捺印的第 0 个样本保留**未变换的原始捺印**作为干净对照，
-所有 TTA 从 `tta_index >= 1` 开始。若只想要变换结果，把 `tta_per_impression` 调大即可。
-
-**Q：生成中断了怎么办？**
-A：直接重跑同样的命令。调度器读取 `logs/done.jsonl` 并逐样本确认图像仍在磁盘上，
-只补生成缺失的样本，日志里会显示「断点续传：跳过 N 个已完成样本」。
-
-**Q：想换自洽模型（Turing 等）怎么办？**
-A：实现 `synthfp/plugins/backends/base.py` 的 `FingerprintBackend`
-（只需 `generate_master(spec) -> MasterArtifact`），用 `@BackendRegistry.register` 注册，
-GUI 的「后端配置」页会自动出现该后端，配置里 `backend.name` 改成它即可。
-
-**Q：生成出来的脊线密度和真实指纹不一样？**
-A：真实 500 dpi 指纹的脊线周期（一脊 + 一谷）约 **8~12 px**（0.4~0.6 mm），
-脊线约占总宽度一半。本项目按这个物理量标定，并有用例守着
-（`tests/test_backend_ridge.py` 用自相关测周期，超出 7~14 px 就失败）。
-调密度请改「后端配置 → 脊线合成 → 最窄/最宽脊宽」：
-数值是**一个周期占多少像素**，调小变密、调大变得稀疏。
-
-**Q：想只保留黑色脊线（做分割 / 细化的标注或输入）？**
-A：勾选「后端配置 → 外观 → 仅脊线显示为黑色（纯二值图）」，
-或配置 `backend.ridge_only_black: true`。输出只有 0 与 255 两个取值：
-脊线纯黑、谷线纯白，纹理与底噪一并关闭，也不做边缘羽化。
-
-![照片模式与二值模式对比](docs/images/sample-photo-vs-binary.png)
-
-左上：默认（照片）模式；右上：`ridge_only_black`；下一行是局部 2× 放大。
-两种模式对同一种子完全确定，因此可用于同一身份的多任务标注。
-
-**Q：质量分是 NFIQ2 吗？**
-A：不是商用 NFIQ2，而是自研的 **NFIQ2 风格**评分（五项加权：脊线清晰度 35% / 对比度 20% /
-方向一致性 25% / 有效面积 10% / 脊线周期合理性 10%），等级 L1–L5 与 NFIQ2 同向。
-好处是零外部依赖、跨平台一致、完全确定；manifest 字段名沿用 `nfiq2` 以便下游统一处理。
-
+宸︿笂锛氶粯璁わ紙鐓х墖锛夋ā寮忥紱鍙充笂锛歚ridge_only_black`锛涗笅涓€琛屾槸灞€閮?2脳 鏀惧ぇ銆?涓ょ妯″紡瀵瑰悓涓€绉嶅瓙瀹屽叏纭畾锛屽洜姝ゅ彲鐢ㄤ簬鍚屼竴韬唤鐨勫浠诲姟鏍囨敞銆?
+**Q锛氳川閲忓垎鏄?NFIQ2 鍚楋紵**
+A锛氫笉鏄晢鐢?NFIQ2锛岃€屾槸鑷爺鐨?**NFIQ2 椋庢牸**璇勫垎锛堜簲椤瑰姞鏉冿細鑴婄嚎娓呮櫚搴?35% / 瀵规瘮搴?20% /
+鏂瑰悜涓€鑷存€?25% / 鏈夋晥闈㈢Н 10% / 鑴婄嚎鍛ㄦ湡鍚堢悊鎬?10%锛夛紝绛夌骇 L1鈥揕5 涓?NFIQ2 鍚屽悜銆?濂藉鏄浂澶栭儴渚濊禆銆佽法骞冲彴涓€鑷淬€佸畬鍏ㄧ‘瀹氾紱manifest 瀛楁鍚嶆部鐢?`nfiq2` 浠ヤ究涓嬫父缁熶竴澶勭悊銆?
 ---
 
-## 11. 测试
+## 11. 娴嬭瘯
 
 ```bash
-python -m pytest tests -o addopts="" -q     # 全量（约 25 秒）
-python -m pytest tests/test_tta.py -q       # 单个模块
+python -m pytest tests -o addopts="" -q     # 鍏ㄩ噺锛堢害 25 绉掞級
+python -m pytest tests/test_tta.py -q       # 鍗曚釜妯″潡
 ```
 
-当前状态：**912 passed**。覆盖范围：
+褰撳墠鐘舵€侊細**912 passed**銆傝鐩栬寖鍥达細
 
-| 文件 | 用例 | 内容 |
+| 鏂囦欢 | 鐢ㄤ緥 | 鍐呭 |
 |------|------|------|
-| `test_tta.py` | 465 | 21 个 TTA 算子：确定性、值域、不修改输入、参数复现 |
-| `test_quality.py` | 68 | 六项质量指标 + 综合评分 + 分级边界 |
-| `test_impressions.py` | 77 | 压力位移场、变形、4 种传感器、坐标映射 |
-| `test_config.py` | 64 | 预设、校验拒绝、YAML 往返与幂等、点号覆盖（含元组下标）、合并语义 |
-| `test_core.py` | 56 | 种子树、计划确定性、划分、Manifest、存储、量化 |
-| `test_minutiae.py` | 55 | 向量化 Zhang-Suen、CN 检测、伪点过滤、ISO 模板 |
-| `test_pipeline.py` | 37 | 算子链、端到端落盘、可复现性、失败隔离与重试、二值收口 |
-| `test_app.py` | 33 | 服务回调、断点续传、导出幂等、统计自洽 |
-| `test_cli.py` | 28 | 全部子命令、退出码、错误路径、GBK 控制台输出 |
-| `test_gui.py` | 22 | 8 页面构造与刷新、主窗口导航、Qt 兼容层约束、GUI 驱动整链路生成、外观控件回填 |
-| `test_backend_ridge.py` | 7 | 脊线周期（自相关 7~14 px）、占空比、灰度对比、二值模式 |
+| `test_tta.py` | 465 | 21 涓?TTA 绠楀瓙锛氱‘瀹氭€с€佸€煎煙銆佷笉淇敼杈撳叆銆佸弬鏁板鐜?|
+| `test_quality.py` | 68 | 鍏」璐ㄩ噺鎸囨爣 + 缁煎悎璇勫垎 + 鍒嗙骇杈圭晫 |
+| `test_impressions.py` | 77 | 鍘嬪姏浣嶇Щ鍦恒€佸彉褰€? 绉嶄紶鎰熷櫒銆佸潗鏍囨槧灏?|
+| `test_config.py` | 64 | 棰勮銆佹牎楠屾嫆缁濄€乊AML 寰€杩斾笌骞傜瓑銆佺偣鍙疯鐩栵紙鍚厓缁勪笅鏍囷級銆佸悎骞惰涔?|
+| `test_core.py` | 56 | 绉嶅瓙鏍戙€佽鍒掔‘瀹氭€с€佸垝鍒嗐€丮anifest銆佸瓨鍌ㄣ€侀噺鍖?|
+| `test_minutiae.py` | 55 | 鍚戦噺鍖?Zhang-Suen銆丆N 妫€娴嬨€佷吉鐐硅繃婊ゃ€両SO 妯℃澘 |
+| `test_pipeline.py` | 37 | 绠楀瓙閾俱€佺鍒扮钀界洏銆佸彲澶嶇幇鎬с€佸け璐ラ殧绂讳笌閲嶈瘯銆佷簩鍊兼敹鍙?|
+| `test_app.py` | 33 | 鏈嶅姟鍥炶皟銆佹柇鐐圭画浼犮€佸鍑哄箓绛夈€佺粺璁¤嚜娲?|
+| `test_cli.py` | 28 | 鍏ㄩ儴瀛愬懡浠ゃ€侀€€鍑虹爜銆侀敊璇矾寰勩€丟BK 鎺у埗鍙拌緭鍑?|
+| `test_gui.py` | 22 | 8 椤甸潰鏋勯€犱笌鍒锋柊銆佷富绐楀彛瀵艰埅銆丵t 鍏煎灞傜害鏉熴€丟UI 椹卞姩鏁撮摼璺敓鎴愩€佸瑙傛帶浠跺洖濉?|
+| `test_backend_ridge.py` | 7 | 鑴婄嚎鍛ㄦ湡锛堣嚜鐩稿叧 7~14 px锛夈€佸崰绌烘瘮銆佺伆搴﹀姣斻€佷簩鍊兼ā寮?|
 
-### 受限沙箱下的临时目录
+### 鍙楅檺娌欑涓嬬殑涓存椂鐩綍
 
-`tests/conftest.py` 会先探测「能否读取一个 0o700 目录」。如果不行
-（Windows 上以受限令牌运行的自动化沙箱会这样），它只做两件收尾工作：
-把建目录的权限位放宽到 0o777，并把 pytest 的临时根挪到工作区内的
-`.pytest-work/`。两者都只作用于**本次测试进程**，不改测试语义；
-普通环境下探测通过，完全不做替换。
-
-若 `tests/` 下出现 `_sfp_probe_*`、`_pytmp`、`pytest-cache-files-*` 这类
-**连自己都读不了**的空目录（受限沙箱的遗留物），普通删除会报拒绝访问。
-用管理员 PowerShell 跑一次 [tools/cleanup_locked.ps1](tools/cleanup_locked.ps1) 即可：
-
+`tests/conftest.py` 浼氬厛鎺㈡祴銆岃兘鍚﹁鍙栦竴涓?0o700 鐩綍銆嶃€傚鏋滀笉琛?锛圵indows 涓婁互鍙楅檺浠ょ墝杩愯鐨勮嚜鍔ㄥ寲娌欑浼氳繖鏍凤級锛屽畠鍙仛涓や欢鏀跺熬宸ヤ綔锛?鎶婂缓鐩綍鐨勬潈闄愪綅鏀惧鍒?0o777锛屽苟鎶?pytest 鐨勪复鏃舵牴鎸埌宸ヤ綔鍖哄唴鐨?`.pytest-work/`銆備袱鑰呴兘鍙綔鐢ㄤ簬**鏈娴嬭瘯杩涚▼**锛屼笉鏀规祴璇曡涔夛紱
+鏅€氱幆澧冧笅鎺㈡祴閫氳繃锛屽畬鍏ㄤ笉鍋氭浛鎹€?
+鑻?`tests/` 涓嬪嚭鐜?`_sfp_probe_*`銆乣_pytmp`銆乣pytest-cache-files-*` 杩欑被
+**杩炶嚜宸遍兘璇讳笉浜?*鐨勭┖鐩綍锛堝彈闄愭矙绠辩殑閬楃暀鐗╋級锛屾櫘閫氬垹闄や細鎶ユ嫆缁濊闂€?鐢ㄧ鐞嗗憳 PowerShell 璺戜竴娆?[tools/cleanup_locked.ps1](tools/cleanup_locked.ps1) 鍗冲彲锛?
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools\cleanup_locked.ps1
 ```
 
-脚本只删清单里的名字（逐个校验必须位于工作区内），不碰任何项目文件。
-这些目录也已在 `.gitignore` 与 pytest 的 `norecursedirs` 中排除，
-所以**即使暂时清不掉，`pytest tests` 也照常工作**。
-
+鑴氭湰鍙垹娓呭崟閲岀殑鍚嶅瓧锛堥€愪釜鏍￠獙蹇呴』浣嶄簬宸ヤ綔鍖哄唴锛夛紝涓嶇浠讳綍椤圭洰鏂囦欢銆?杩欎簺鐩綍涔熷凡鍦?`.gitignore` 涓?pytest 鐨?`norecursedirs` 涓帓闄わ紝
+鎵€浠?*鍗充娇鏆傛椂娓呬笉鎺夛紝`pytest tests` 涔熺収甯稿伐浣?*銆?
 ---
 
-## 12. 参考文献
-
+## 12. 鍙傝€冩枃鐚?
 1. Cappelli, R. et al. "Synthetic Fingerprint-Image Generation." *ICPR*, 2000.
 2. Cappelli, R. "SFinGe: an Approach to Synthetic Fingerprint Generation." *BioAuth Workshop*, 2004.
 3. Maltoni, D. et al. *Handbook of Fingerprint Recognition.* Springer, 2009.
@@ -419,18 +315,11 @@ powershell -ExecutionPolicy Bypass -File tools\cleanup_locked.ps1
 
 ---
 
-## 13. 参与贡献 / 引用 / 许可
+## 13. 鍙備笌璐＄尞 / 寮曠敤 / 璁稿彲
 
-- 想改代码？先看 [CONTRIBUTING.md](CONTRIBUTING.md)（环境、约定、扩展点），
-  以及 [docs/CONTRACTS.md](docs/CONTRACTS.md)（插件接口契约）。
-- 用它产出了论文/数据集？引用信息见 [CITATION.cff](CITATION.cff)。
-- 本项目以 **MIT License** 发布，版权归 **SLIM-FRNet**，
-  全文见 [LICENSE](LICENSE)。
-
-### 关于合成数据的使用边界
-
-MIT 许可授予你对**代码**的广泛自由；但请注意：生成的图像是**算法合成的**，
-不含任何真实人类指纹。请勿把它们用于冒充真实身份、规避生物识别系统，
-或在未声明的场合充当真实采集数据。学术使用时，建议在论文中显式注明数据由本工具合成
-（数据集里的 `README.md` 与 `environment.json` 已自动带上该声明与可复现信息）。
+- 鎯虫敼浠ｇ爜锛熷厛鐪?[CONTRIBUTING.md](CONTRIBUTING.md)锛堢幆澧冦€佺害瀹氥€佹墿灞曠偣锛夛紝
+  浠ュ強 [docs/CONTRACTS.md](docs/CONTRACTS.md)锛堟彃浠舵帴鍙ｅ绾︼級銆?- 鐢ㄥ畠浜у嚭浜嗚鏂?鏁版嵁闆嗭紵寮曠敤淇℃伅瑙?[CITATION.cff](CITATION.cff)銆?- 鏈」鐩互 **MIT License** 鍙戝竷锛岀増鏉冨綊 **xf785**锛?  鍏ㄦ枃瑙?[LICENSE](LICENSE)銆?
+### 鍏充簬鍚堟垚鏁版嵁鐨勪娇鐢ㄨ竟鐣?
+MIT 璁稿彲鎺堜簣浣犲**浠ｇ爜**鐨勫箍娉涜嚜鐢憋紱浣嗚娉ㄦ剰锛氱敓鎴愮殑鍥惧儚鏄?*绠楁硶鍚堟垚鐨?*锛?涓嶅惈浠讳綍鐪熷疄浜虹被鎸囩汗銆傝鍕挎妸瀹冧滑鐢ㄤ簬鍐掑厖鐪熷疄韬唤銆佽閬跨敓鐗╄瘑鍒郴缁燂紝
+鎴栧湪鏈０鏄庣殑鍦哄悎鍏呭綋鐪熷疄閲囬泦鏁版嵁銆傚鏈娇鐢ㄦ椂锛屽缓璁湪璁烘枃涓樉寮忔敞鏄庢暟鎹敱鏈伐鍏峰悎鎴?锛堟暟鎹泦閲岀殑 `README.md` 涓?`environment.json` 宸茶嚜鍔ㄥ甫涓婅澹版槑涓庡彲澶嶇幇淇℃伅锛夈€?
 

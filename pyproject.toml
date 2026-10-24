@@ -1,11 +1,11 @@
-[build-system]
+﻿[build-system]
 requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "synthfp"
 version = "2.0.0"
-description = "SLIM-FRNet：轻量级 SFinGe 合成指纹数据集合成平台（GUI 优先，可复现）"
+description = "SLIM-FRNet锛氳交閲忕骇 SFinGe 鍚堟垚鎸囩汗鏁版嵁闆嗗悎鎴愬钩鍙帮紙GUI 浼樺厛锛屽彲澶嶇幇锛?
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -34,7 +34,7 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Image Processing",
 ]
 
-# --- 最小依赖：仅 4 个第三方包 ---
+# --- 鏈€灏忎緷璧栵細浠?4 涓涓夋柟鍖?---
 dependencies = [
     "numpy>=1.26",
     "opencv-python>=4.8",
@@ -43,14 +43,14 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/SLIM-FRNet/slim-frnet"
-Repository = "https://github.com/SLIM-FRNet/slim-frnet"
-Issues = "https://github.com/SLIM-FRNet/slim-frnet/issues"
-Changelog = "https://github.com/SLIM-FRNet/slim-frnet/releases"
-"架构说明" = "https://github.com/SLIM-FRNet/slim-frnet/blob/main/ARCHITECTURE.md"
+Homepage = "https://github.com/xf785/slim-frnet"
+Repository = "https://github.com/xf785/slim-frnet"
+Issues = "https://github.com/xf785/slim-frnet/issues"
+Changelog = "https://github.com/xf785/slim-frnet/releases"
+"鏋舵瀯璇存槑" = "https://github.com/xf785/slim-frnet/blob/main/ARCHITECTURE.md"
 
 [project.optional-dependencies]
-# GUI 绑定二选一即可：程序优先 PySide6，回退 PyQt6
+# GUI 缁戝畾浜岄€変竴鍗冲彲锛氱▼搴忎紭鍏?PySide6锛屽洖閫€ PyQt6
 gui = ["PySide6>=6.5"]
 gui-pyqt = ["PyQt6>=6.5"]
 dev = ["pytest>=8.0", "ruff>=0.5"]
@@ -67,9 +67,7 @@ license-files = ["LICENSE"]
 
 [tool.setuptools.packages.find]
 include = ["synthfp*"]
-# 显式排除非包目录：本地归档（_archive/ 里可能有几百 MB 的旧项目与虚拟环境）、
-# 测试、脚本与文档。不写 exclude 时 setuptools 会遍历整棵树，本地构建会非常慢。
-exclude = [
+# 鏄惧紡鎺掗櫎闈炲寘鐩綍锛氭湰鍦板綊妗ｏ紙_archive/ 閲屽彲鑳芥湁鍑犵櫨 MB 鐨勬棫椤圭洰涓庤櫄鎷熺幆澧冿級銆?# 娴嬭瘯銆佽剼鏈笌鏂囨。銆備笉鍐?exclude 鏃?setuptools 浼氶亶鍘嗘暣妫垫爲锛屾湰鍦版瀯寤轰細闈炲父鎱€?exclude = [
     "_archive*",
     "tests*",
     "tools*",
@@ -87,10 +85,7 @@ synthfp = ["gui/style/*.qss"]
 testpaths = ["tests"]
 addopts = "-q"
 filterwarnings = ["ignore::UserWarning:pydantic.*"]
-# 排除临时/工具目录，避免收集阶段被无关目录干扰（`--setup-show` 也不会进去）。
-# 这些名字覆盖 pytest 自己的临时根、本项目的测试脚手架目录，以及受限沙箱
-# 可能留下的不可读空目录（普通环境下它们本就不存在，列出无副作用）。
-norecursedirs = [
+# 鎺掗櫎涓存椂/宸ュ叿鐩綍锛岄伩鍏嶆敹闆嗛樁娈佃鏃犲叧鐩綍骞叉壈锛坄--setup-show` 涔熶笉浼氳繘鍘伙級銆?# 杩欎簺鍚嶅瓧瑕嗙洊 pytest 鑷繁鐨勪复鏃舵牴銆佹湰椤圭洰鐨勬祴璇曡剼鎵嬫灦鐩綍锛屼互鍙婂彈闄愭矙绠?# 鍙兘鐣欎笅鐨勪笉鍙绌虹洰褰曪紙鏅€氱幆澧冧笅瀹冧滑鏈氨涓嶅瓨鍦紝鍒楀嚭鏃犲壇浣滅敤锛夈€?norecursedirs = [
     "pytest-cache-files-*",
     "pytest-of-*",
     "tmp*",
@@ -116,13 +111,11 @@ exclude = ["_archive", ".venv", "outputs", "datasets"]
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I", "B"]
-# E501 交给格式化器；B008 是默认参数调用的常见误报。
-# UP006/UP035/UP045（typing.List → list 等）刻意不启用：本包所有模块都有
-# `from __future__ import annotations`，显式 typing 泛型是为了让 Python 3.10
-# 用户在任意求值路径下都能正确解析注解，属于有意为之的可读性选择。
-ignore = ["E501", "B008", "UP006", "UP035", "UP045"]
+# E501 浜ょ粰鏍煎紡鍖栧櫒锛汢008 鏄粯璁ゅ弬鏁拌皟鐢ㄧ殑甯歌璇姤銆?# UP006/UP035/UP045锛坱yping.List 鈫?list 绛夛級鍒绘剰涓嶅惎鐢細鏈寘鎵€鏈夋ā鍧楅兘鏈?# `from __future__ import annotations`锛屾樉寮?typing 娉涘瀷鏄负浜嗚 Python 3.10
+# 鐢ㄦ埛鍦ㄤ换鎰忔眰鍊艰矾寰勪笅閮借兘姝ｇ‘瑙ｆ瀽娉ㄨВ锛屽睘浜庢湁鎰忎负涔嬬殑鍙鎬ч€夋嫨銆?ignore = ["E501", "B008", "UP006", "UP035", "UP045"]
 
 [tool.ruff.lint.per-file-ignores]
-# 原项目已验证的内核：保留其原始风格，只做必要的最小改造（便于逐像素对照）
+# 鍘熼」鐩凡楠岃瘉鐨勫唴鏍革細淇濈暀鍏跺師濮嬮鏍硷紝鍙仛蹇呰鐨勬渶灏忔敼閫狅紙渚夸簬閫愬儚绱犲鐓э級
 "synthfp/legacy/**" = ["E", "F", "W", "I", "B"]
 "tests/**" = ["E", "F", "W", "I", "B"]
+
