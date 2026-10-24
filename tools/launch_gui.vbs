@@ -22,7 +22,7 @@ parent = fso.GetParentFolderName(here)                   ' 项目根目录
 candidates = Array( _
     parent & "\.venv\Scripts\pythonw.exe", _
     parent & "\venv\Scripts\pythonw.exe", _
-    parent & "\synthetic-fingerprint-generator\.venv\Scripts\pythonw.exe", _
+    parent & "\env\Scripts\pythonw.exe", _
     shell.ExpandEnvironmentStrings("%LOCALAPPDATA%") & "\Programs\Python\Python313\pythonw.exe", _
     shell.ExpandEnvironmentStrings("%LOCALAPPDATA%") & "\Programs\Python\Python312\pythonw.exe", _
     shell.ExpandEnvironmentStrings("%LOCALAPPDATA%") & "\Programs\Python\Python311\pythonw.exe" _

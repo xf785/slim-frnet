@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 REM ============================================================
 REM  synthfp - one-click GUI launcher (Windows)
 REM ============================================================
@@ -21,7 +21,6 @@ REM --- candidates, in preference order -------------------------------
 call :probe "%~dp0.venv\Scripts\python.exe"
 call :probe "%~dp0venv\Scripts\python.exe"
 call :probe "%~dp0env\Scripts\python.exe"
-call :probe "%~dp0synthetic-fingerprint-generator\.venv\Scripts\python.exe"
 call :probe "%LOCALAPPDATA%\Programs\Python\Python313\python.exe"
 call :probe "%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
 call :probe "%LOCALAPPDATA%\Programs\Python\Python311\python.exe"

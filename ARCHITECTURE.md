@@ -1,4 +1,4 @@
-﻿# synthfp v2.0 架构说明
+# synthfp v2.0 架构说明
 
 本文档面向后续维护者，说明**为什么这样分层**、**每层能做什么不能做什么**、
 以及**新增功能应该改哪里**。设计依据见 [docs/DESIGN.md](docs/DESIGN.md)。
@@ -325,5 +325,6 @@ SeedTree(root_seed, dataset_name)
 | 生成主流程（脚本式，嵌在 GUI 里） | **重写**为 Planner + Scheduler + Pipeline |
 | README 中描述但**并不存在**的模块（ingestion / annotation / patching / export / pipeline / cli / 部分 degradation 算子） | 按设计文档**重新实现**为 `plugins/minutiae`、`plugins/quality`、`app/exporter`、`pipeline`、`cli` |
 
-原项目目录 `synthetic-fingerprint-generator/` 作为**基线快照保留**（git 历史完整、未改动），
-便于需要时与 v2.0 做逐像素对照（`backend.shape_style="box"` + 相同种子）。
+原项目作为**基线快照保留在本地**（本机路径 `_archive/legacy-baseline/`，`git 历史完整、未改动`，
+不随仓库发布），便于需要时与 v2.0 做逐像素对照
+（`backend.shape_style="box"` + 相同种子）。
