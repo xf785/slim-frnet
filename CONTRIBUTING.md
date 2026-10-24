@@ -6,7 +6,7 @@
 ## 开发环境
 
 ```bash
-git clone https://github.com/<you>/slim-frnet.git
+git clone https://github.com/xf785/slim-frnet.git
 cd slim-frnet
 python -m venv .venv
 # Windows: .venv\Scripts\activate
