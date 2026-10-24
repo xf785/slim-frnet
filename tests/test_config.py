@@ -570,7 +570,8 @@ def test_summary_lines覆盖全部配置段():
     joined = "\n".join(lines)
     for label in ("数据集", "规模", "输出", "类别分布", "分辨率", "后端", "TTA", "划分", "导出"):
         assert label in joined, label
-    assert str(cfg.dataset_dir) in joined
+    # 摘要里的路径统一用正斜杠（跨平台一致，见 test_配置摘要里的路径用正斜杠）
+    assert cfg.dataset_dir.as_posix() in joined
 
 
 def test_各部分summary在关闭状态下可读():
@@ -649,3 +650,10 @@ def test_正斜杠路径可往返且语义不变():
     reloaded = loads_config(dump_yaml(original))
     assert reloaded == original
     assert reloaded.runtime.log_dir == original.runtime.log_dir
+
+
+def test_配置摘要里的路径用正斜杠():
+    """`synthfp show` / 数据集 README 的摘要里也不能出现反斜杠路径。"""
+    text = "\n".join(build_config("default").summary_lines())
+    assert "outputs/synth_fp_v1" in text
+    assert "outputs\\synth_fp_v1" not in text

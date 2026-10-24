@@ -665,7 +665,7 @@ class AppConfig(_Section):
         return [
             f"数据集      : {self.dataset.name}",
             f"规模        : {self.dataset.summary()}",
-            f"输出        : {self.dataset_dir}",
+            f"输出        : {self.dataset_dir.as_posix()}",
             f"类别分布    : {self.classes.summary()}",
             f"分辨率      : {self.resolved_image_size()[0]}×{self.resolved_image_size()[1]} @ {self.backend.ppi}ppi",
             f"后端        : {self.backend.name}",
